@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;background:#f3f3f3;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+    .box{background:#fff;padding:20px 24px;border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.08);width:360px}
+    .box h2{margin:0 0 12px;font-size:18px;text-align:center}
+    label{display:block;font-size:13px;margin-top:8px}
+    input{width:100%;padding:8px;margin-top:6px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}
+    .row{display:flex;gap:8px;margin-top:14px}
+    button{flex:1;padding:8px;border:0;background:#1976d2;color:#fff;border-radius:4px;cursor:pointer}
+    .link{font-size:12px;color:#666;text-align:center;margin-top:10px}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>เข้าสู่ระบบ</h2>
+    <form id="loginForm">
+      <label>ชื่อผู้ใช้</label>
+      <input id="l-username" type="text" required>
+      <label>รหัสผ่าน</label>
+      <input id="l-password" type="password" required>
+      <div class="row">
+        <button type="submit">Login</button>
+      </div>
+      <div class="link"><a href="Register.html">ลงทะเบียน</a></div>
+    </form>
+  </div>
+
+<script src="Auth.js"></script>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const u = document.getElementById('l-username').value.trim();
+  const p = document.getElementById('l-password').value;
+  if (!u || !p) { return alert('กรุณากรอกชื่อผู้ใช้และรหัสผ่าน'); }
+  if (!window.verifyCredentials) return alert('Auth.js ไม่ถูกโหลด');
+  try {
+    const res = await window.verifyCredentials(u, p);
+    if (res && res.success) {
+      window.setSession && window.setSession(u);
+      location.href = 'Index.html';
+    } else {
+      alert(res && res.error ? res.error : 'ล็อกอินไม่สำเร็จ');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('เกิดข้อผิดพลาดขณะล็อกอิน');
+  }
+});
+</script>
+</body>
+</html>
