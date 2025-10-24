@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>แก้ไข Database - SUB Estimator</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background:#f5f5f5; }
+    .section { background:#fff; padding:16px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,.08); margin-bottom:16px; }
+    .db-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .db-col { display:flex; flex-direction:column; gap:6px; }
+    textarea { width:100%; min-height:380px; font-family: ui-monospace,Consolas,Menlo,monospace; font-size:12px; }
+    .toolbar { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0; }
+    #db-status { font-size:12px; color:#444; margin-top:6px; }
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;        /* เพิ่มระยะห่าง */
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      padding: 10px;              /* เพิ่มพื้นที่ภายใน */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    /* ตารางแก้ไข Database แบบอินพุต 1 แถว (No, Price, Description, Save) */
+    .edit-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      table-layout: fixed;
+    }
+    .edit-table th, .edit-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      background: #fff;
+    }
+    .edit-table thead th {
+      background: #f2f2f2;
+      text-align: center;
+      font-weight: 700;
+    }
+    /* ปรับสัดส่วนคอลัมน์ให้ Description กว้างขึ้น */
+    .edit-table col:nth-child(1) { width: 10%; }  /* No (เดิม 12%) */
+    .edit-table col:nth-child(2) { width: 14%; }  /* Price (เดิม 16%) */
+    .edit-table col:nth-child(3) { width: 66%; }  /* Description (เดิม auto) */
+    .edit-table col:nth-child(4) { width: 10%; }  /* Save button (เดิม 14%) */
+    .edit-table input {
+      width: 100%;
+      padding: 6px;
+      box-sizing: border-box;
+    }
+    /* ทำให้ช่อง Description ยาวขึ้นในตาราง */
+    .edit-table td:nth-child(3) input {
+      min-width: 520px;
+    }
+    /* ทำให้ช่อง Description ใน Quick Add ยาวขึ้น */
+    #qa-desc {
+      min-width: 520px;
+    }
+    /* กันล้นบนจอแคบ */
+    @media (max-width: 768px) {
+      .edit-table td:nth-child(3) input,
+      #qa-desc { min-width: 100%; }
+    }
+
+    /* ข้อความสถานะ */
+    .db-msg { margin-top: 8px; font-size: 13px; color: #444; }
+    .db-msg.err { color: #c00; }
+
+    @media (max-width: 960px){ .db-grid { grid-template-columns:1fr; } }
+  </style>
+
+  <!-- DB loader: version.txt + dbVersionHint -->
+  <script>
+    // โหลด DatabasePW.js / DatabaseCT.js ด้วย cache-buster จาก version.txt + dbVersionHint
+    (function() {
+      const files = ['DatabasePW.js','DatabaseCT.js'];
+      async function loadSequential(buster) {
+        for (const f of files) {
+          await new Promise((resolve) => {
+            const s = document.createElement('script');
+            s.src = f + '?v=' + encodeURIComponent(buster);
+            s.onload = resolve; s.onerror = resolve; document.head.appendChild(s);
+          });
+        }
+        try { document.dispatchEvent(new Event('db-scripts-loaded')); } catch (e) {}
+        // เคลียร์ hint หลังโหลดสำเร็จ
+        try { localStorage.removeItem('dbVersionHint'); } catch (e) {}
+      }
+      (async function chooseBuster() {
+        const origin = location.origin;
+        const basePath = location.pathname.replace(/\/[^\/]*$/, '/');
+        const hint = (function(){ try { return localStorage.getItem('dbVersionHint') || ''; } catch(e){ return ''; } })();
+        // ให้เช็ค version.txt ก่อน เพื่อสะท้อนการบันทึกล่าสุด
+        const metaCandidates = [ 'version.txt', 'version.json', 'dist/version.json', origin + basePath + 'dist/version.json' ];
+        for (const cand of metaCandidates) {
+          try {
+            const resp = await fetch(cand, { cache: 'no-store' });
+            if (!resp.ok) continue;
+            const text = await resp.text();
+            try { const j = JSON.parse(text); const v = j.version || j.date || Date.now(); return loadSequential(String(v) + (hint ? '-' + hint : '')); }
+            catch { const t = text.trim(); if (t) return loadSequential(t + (hint ? '-' + hint : '')); }
+          } catch (e) {}
+        }
+        loadSequential(String(Date.now()) + (hint ? '-' + hint : ''));
+      })();
+    })();
+  </script>
+</head>
+<body>
+  <div class="top-actions">
+    <a href="Index.html"><button type="button">กลับหน้า Estimator</button></a>
+  </div>
+
+  <h1>แก้ไข Database</h1>
+
+  <!-- NEW: Quick Add (เพิ่ม/แก้รายการอย่างรวดเร็ว) -->
+  <div class="section">
+    <h2>เพิ่มข้อมูลเข้า Database (Quick Add)</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+      <div>
+        <label for="qa-type" style="font-weight:bold">ประเภท</label>
+        <select id="qa-type" style="padding:6px">
+          <option value="pw">Power</option>
+          <option value="ct">Control</option>
+        </select>
+      </div>
+      <div>
+        <label for="qa-no" style="font-weight:bold">No</label>
+        <input id="qa-no" type="number" min="0" placeholder="เช่น 1001" oninput="qaPrefillFromDb()" style="min-width:120px">
+      </div>
+      <div>
+        <label for="qa-price" style="font-weight:bold">Price</label>
+        <input id="qa-price" type="number" min="0" step="0.01" placeholder="0.00" style="min-width:140px">
+      </div>
+      <div style="flex:1;min-width:260px">
+        <label for="qa-desc" style="font-weight:bold">Description</label>
+        <input id="qa-desc" type="text" placeholder="รายละเอียด...">
+      </div>
+      <div>
+        <button type="button" onclick="qaSave()">บันทึกเข้า Database</button>
+        <button type="button" onclick="qaDelete()" style="margin-left:6px;color:#b00000">ลบหมายเลขนี้</button>
+      </div>
+    </div>
+    <div id="qa-msg" style="font-size:13px;margin-top:6px;color:#444"></div>
+  </div>
+
+  <!-- แทนที่ editor เดิมด้วยฟอร์มตารางสำหรับ Power -->
+  <div class="section">
+    <h2>Power Database</h2>
+    <table class="edit-table">
+      <colgroup><col><col><col><col></colgroup>
+      <thead>
+        <tr>
+          <th style="text-align:center">No</th>
+          <th style="text-align:center">Price</th>
+          <th style="text-align:center">Description</th>
+          <th style="text-align:center">บันทึก</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input id="pw-no" type="number" min="0" placeholder="เช่น 1001" oninput="prefill('pw')"></td>
+          <td><input id="pw-price" type="number" min="0" step="0.01" placeholder="0.00"></td>
+          <td><input id="pw-desc" type="text" placeholder="รายละเอียด..."></td>
+          <td style="text-align:center"><button type="button" onclick="saveToServer('pw')">บันทึก</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="pw-msg" class="db-msg"></div>
+  </div>
+
+  <!-- ฟอร์มตารางสำหรับ Control -->
+  <div class="section">
+    <h2>Control Database</h2>
+    <table class="edit-table">
+      <colgroup><col><col><col><col></colgroup>
+      <thead>
+        <tr>
+          <th style="text-align:center">No</th>
+          <th style="text-align:center">Price</th>
+          <th style="text-align:center">Description</th>
+          <th style="text-align:center">บันทึก</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input id="ct-no" type="number" min="0" placeholder="เช่น 2001" oninput="prefill('ct')"></td>
+          <td><input id="ct-price" type="number" min="0" step="0.01" placeholder="0.00"></td>
+          <td><input id="ct-desc" type="text" placeholder="รายละเอียด..."></td>
+          <td style="text-align:center"><button type="button" onclick="saveToServer('ct')">บันทึก</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="ct-msg" class="db-msg"></div>
+  </div>
+
+  <!-- DB loader + ฟังก์ชันเดิม -->
+  <script>
+    // โหลด DatabasePW.js / DatabaseCT.js ด้วย cache-buster จาก version.txt + dbVersionHint
+    (function() {
+      const files = ['DatabasePW.js','DatabaseCT.js'];
+      async function loadSequential(buster) {
+        for (const f of files) {
+          await new Promise((resolve) => {
+            const s = document.createElement('script');
+            s.src = f + '?v=' + encodeURIComponent(buster);
+            s.onload = resolve; s.onerror = resolve; document.head.appendChild(s);
+          });
+        }
+        try { document.dispatchEvent(new Event('db-scripts-loaded')); } catch (e) {}
+        // เคลียร์ hint หลังโหลดสำเร็จ
+        try { localStorage.removeItem('dbVersionHint'); } catch (e) {}
+      }
+      (async function chooseBuster() {
+        const origin = location.origin;
+        const basePath = location.pathname.replace(/\/[^\/]*$/, '/');
+        const hint = (function(){ try { return localStorage.getItem('dbVersionHint') || ''; } catch(e){ return ''; } })();
+        // ให้เช็ค version.txt ก่อน เพื่อสะท้อนการบันทึกล่าสุด
+        const metaCandidates = [ 'version.txt', 'version.json', 'dist/version.json', origin + basePath + 'dist/version.json' ];
+        for (const cand of metaCandidates) {
+          try {
+            const resp = await fetch(cand, { cache: 'no-store' });
+            if (!resp.ok) continue;
+            const text = await resp.text();
+            try { const j = JSON.parse(text); const v = j.version || j.date || Date.now(); return loadSequential(String(v) + (hint ? '-' + hint : '')); }
+            catch { const t = text.trim(); if (t) return loadSequential(t + (hint ? '-' + hint : '')); }
+          } catch (e) {}
+        }
+        loadSequential(String(Date.now()) + (hint ? '-' + hint : ''));
+      })();
+    })();
+  </script>
+
+  <!-- SECTION: UI handlers (prefill, setMsg, overrides) -->
+  <script>
+    // DB editor functions
+    // คีย์ LocalStorage สำหรับ Overrides (ใช้ร่วมกับระบบเดิม)
+    const DB_KEYS = { pw: 'dbOverridePW', ct: 'dbOverrideCT' };
+
+    function setMsg(which, message, isErr=false) {
+      const el = document.getElementById(which === 'pw' ? 'pw-msg' : 'ct-msg');
+      if (!el) return;
+      el.textContent = message || '';
+      el.className = 'db-msg' + (isErr ? ' err' : '');
+    }
+
+    // ฟังก์ชันช่วย: คำนวณหมายเลขถัดไปจากหมายเลขสูงสุดใน DB (ถ้าไม่มี ใช้ค่าเริ่มต้นตามประเภท)
+    function getNextIdSuggestion(which) {
+      try {
+        const db = which === 'pw' ? (window.powerDatabase || {}) : (window.controlDatabase || {});
+        const nums = Object.keys(db).map(k => parseInt(k, 10)).filter(n => !isNaN(n));
+        if (nums.length) return Math.max(...nums) + 1;
+      } catch (e) {}
+      return which === 'ct' ? 2001 : 1001;
+    }
+
+    // เปลี่ยนจาก function prefill(which) เป็น window.prefill = function ...
+    window.prefill = function prefill(which) {
+      try {
+        const noEl = document.getElementById(which === 'pw' ? 'pw-no' : 'ct-no');
+        const descEl = document.getElementById(which === 'pw' ? 'pw-desc' : 'ct-desc');
+        const priceEl = document.getElementById(which === 'pw' ? 'pw-price' : 'ct-price');
+        const no = parseInt(noEl.value || '0', 10);
+        if (!no) { descEl.value = ''; priceEl.value = ''; setMsg(which, ''); return; }
+
+        const db = which === 'pw' ? (window.powerDatabase || {}) : (window.controlDatabase || {});
+        const item = db[no];
+        if (item) {
+          // พบข้อมูลเดิม: เติมค่า และแสดงข้อความปกติ (ไม่ใช่สีแดง)
+          descEl.value = item.desc != null ? String(item.desc) : '';
+          priceEl.value = item.price != null ? String(item.price) : '';
+          setMsg(which, 'โหลดข้อมูลเดิมแล้ว', false);
+        } else {
+          // ไม่พบหมายเลข -> เคลียร์ Price/Description และไม่แสดงแจ้งเตือน
+          setMsg(which, '');
+          descEl.value = '';
+          priceEl.value = '';
+        }
+      } catch (e) {
+        setMsg(which, 'เกิดข้อผิดพลาดขณะโหลดข้อมูล', true);
+        console.warn(e);
+      }
+    };
+
+    function readOverride(which) {
+      try {
+        const key = DB_KEYS[which];
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+      } catch { return null; }
+    }
+    function writeOverride(which, obj) {
+      try {
+        const key = DB_KEYS[which];
+        localStorage.setItem(key, JSON.stringify(obj || {}, null, 2));
+      } catch (e) { console.warn('writeOverride failed', e); }
+    }
+
+    function saveItem(which) {
+      try {
+        const noEl = document.getElementById(which === 'pw' ? 'pw-no' : 'ct-no');
+        const descEl = document.getElementById(which === 'pw' ? 'pw-desc' : 'ct-desc');
+        const priceEl = document.getElementById(which === 'pw' ? 'pw-price' : 'ct-price');
+
+        const no = parseInt(noEl.value || '0', 10);
+        const price = parseFloat(priceEl.value || '0');
+        const desc = (descEl.value || '').trim();
+
+        if (!no) { setMsg(which, 'กรุณากรอก No ให้ถูกต้อง', true); return; }
+        if (!desc) { setMsg(which, 'กรุณากรอก Description', true); return; }
+        if (isNaN(price)) { setMsg(which, 'กรุณากรอกราคาให้ถูกต้อง', true); return; }
+
+        // อัปเดต Database ในหน่วยความจำ
+        if (which === 'pw') {
+          window.powerDatabase = window.powerDatabase || {};
+          window.powerDatabase[no] = { desc, price };
+        } else {
+          window.controlDatabase = window.controlDatabase || {};
+          window.controlDatabase[no] = { desc, price };
+        }
+
+        // อัปเดต Overrides ใน LocalStorage (merge entry เดียว)
+        const currentOverride = readOverride(which) || {};
+        currentOverride[no] = { desc, price };
+        writeOverride(which, currentOverride);
+
+        setMsg(which, 'บันทึกสำเร็จ');
+      } catch (e) {
+        setMsg(which, 'บันทึกไม่สำเร็จ', true);
+        console.error(e);
+      }
+    }
+
+    // อ่านค่าจากอินพุตปัจจุบันแล้วอัปเดต object ในหน่วยความจำ
+    function applyCurrentInputsToMemory(which) {
+      try {
+        const noEl = document.getElementById(which === 'pw' ? 'pw-no' : 'ct-no');
+        const descEl = document.getElementById(which === 'pw' ? 'pw-desc' : 'ct-desc');
+        const priceEl = document.getElementById(which === 'pw' ? 'pw-price' : 'ct-price');
+        const no = parseInt(noEl && noEl.value || '0', 10);
+        const price = parseFloat(priceEl && priceEl.value || '0');
+        const desc = (descEl && descEl.value || '').trim();
+        if (!no || !desc || isNaN(price)) return false;
+
+        if (which === 'pw') {
+          window.powerDatabase = window.powerDatabase || {};
+          window.powerDatabase[no] = { desc, price };
+        } else {
+          window.controlDatabase = window.controlDatabase || {};
+          window.controlDatabase[no] = { desc, price };
+        }
+        return true;
+      } catch { return false; }
+    }
+
+    // ส่วนกลาง: บันทึก DB ลงไฟล์ (ใช้ร่วมกันได้ทั้งเพิ่ม/แก้/ลบ)
+    async function persistDb(which, obj, onMsg) {
+      const tell = (msg, isErr) => {
+        try {
+          if (typeof onMsg === 'function') onMsg(msg, !!isErr);
+          else setMsg(which, msg, !!isErr);
+        } catch (e) { /* ignore */ }
+      };
+
+      try {
+        tell('กำลังบันทึก...', false);
+
+        // ใช้ endpoint เดิมของโปรเจกต์และ payload ที่ถูกต้อง
+        const url = 'save-db.php?t=' + Date.now();
+        let ok = false, text = '';
+
+        try {
+          const resp = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8', 'Accept': 'application/json' },
+            body: JSON.stringify({ which, data: obj }) // important: ฟิลด์ต้องเป็น which + data
+          });
+          text = await resp.text().catch(() => '');
+          if (resp.ok) {
+            ok = true;
+            tell('บันทึกสำเร็จ: ' + (text || 'ok'), false);
+            try { localStorage.setItem('dbVersionHint', String(Date.now())); } catch (e) {}
+            // รีโหลดเพื่อให้สคริปต์ DB ถูกโหลดใหม่ (สะท้อนการลบ)
+            setTimeout(() => location.reload(), 250);
+            return true;
+          } else {
+            tell('การบันทึกจากเซิร์ฟเวอร์ล้มเหลว: ' + (text || resp.statusText), true);
+          }
+        } catch (e) {
+          console.warn('persistDb network error', e);
+          tell('ไม่สามารถติดต่อเซิร์ฟเวอร์เพื่อบันทึกได้', true);
+        }
+
+        // fallback เก็บสำเนาไว้เครื่อง (ไม่แก้ไฟล์จริง)
+        try {
+          try { localStorage.setItem('dbVersionHint', String(Date.now())); } catch (e) {}
+          const key = which === 'pw' ? 'dbLastSavedPW' : 'dbLastSavedCT';
+          try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) {}
+          if (!ok) tell('บันทึกแบบเครื่องเดียวเสร็จแล้ว (ไม่ได้แก้ไฟล์จริง)', true);
+        } catch (e) {
+          tell('ไม่สามารถทำ fallback ได้', true);
+        }
+
+        return ok;
+      } catch (e) {
+        tell('เกิดข้อผิดพลาดขณะบันทึก', true);
+        console.error(e);
+        return false;
+      }
+    }
+
+    // --- NEW: saveToServer wrapper (fix ReferenceError) ---
+    // Called by the "บันทึก" buttons in the table: saveToServer('pw') / saveToServer('ct')
+    window.saveToServer = async function saveToServer(which) {
+      try {
+        // Validate & apply current inputs into in-memory DB
+        const applied = applyCurrentInputsToMemory(which);
+        if (!applied) {
+          setMsg(which, 'กรุณากรอกข้อมูลให้ครบและถูกต้องก่อนบันทึก', true);
+          return false;
+        }
+
+        // Read current inputs (No / Price / Desc)
+        const noEl = document.getElementById(which === 'pw' ? 'pw-no' : 'ct-no');
+        const priceEl = document.getElementById(which === 'pw' ? 'pw-price' : 'ct-price');
+        const descEl = document.getElementById(which === 'pw' ? 'pw-desc' : 'ct-desc');
+        const no = parseInt(noEl && noEl.value || '0', 10);
+        const price = parseFloat(priceEl && priceEl.value || '0');
+        const desc = (descEl && descEl.value || '').trim();
+
+        if (!no || !desc || isNaN(price)) {
+          setMsg(which, 'กรุณากรอก No, Description และ Price ให้ถูกต้อง', true);
+          return false;
+        }
+
+        // Update overrides (same behavior as saveItem)
+        try {
+          const currentOverride = readOverride(which) || {};
+          currentOverride[no] = { desc, price };
+          writeOverride(which, currentOverride);
+        } catch (e) {
+          console.warn('writeOverride failed', e);
+        }
+
+        // Inform user and persist to server (persistDb handles network + fallback)
+        setMsg(which, 'กำลังบันทึก...', false);
+        const dbObj = which === 'pw' ? window.powerDatabase || {} : window.controlDatabase || {};
+        const ok = await persistDb(which, dbObj, (m, err) => setMsg(which, m, err));
+        return ok;
+      } catch (err) {
+        console.error('saveToServer failed', err);
+        setMsg(which, 'บันทึกไม่สำเร็จ (ดูคอนโซล)', true);
+        return false;
+      }
+    };
+
+    // NEW: Quick Add helpers (ใช้ DB เดิม + saveToServer)
+    // ...existing code (qaSetMsg, qaGetType)...
+
+    // เปลี่ยนจาก function qaPrefillFromDb() เป็น window.qaPrefillFromDb = function ...
+    window.qaPrefillFromDb = function qaPrefillFromDb() {
+      try {
+        const which = qaGetType();
+        const noEl = document.getElementById('qa-no');
+        const priceEl = document.getElementById('qa-price');
+        const descEl = document.getElementById('qa-desc');
+        const no = parseInt(noEl.value || '0', 10);
+        if (!no) { priceEl.value = ''; descEl.value = ''; qaSetMsg(''); return; }
+
+        const db = which === 'pw' ? (window.powerDatabase || {}) : (window.controlDatabase || {});
+        const item = db[no];
+        if (item) {
+          priceEl.value = item.price != null ? String(item.price) : '';
+          descEl.value = item.desc != null ? String(item.desc) : '';
+          const nextId = getNextIdSuggestion && getNextIdSuggestion(which);
+          if (nextId) qaSetMsg('มีข้อมูลหมายเลขนี้แล้ว — แนะนำหมายเลขถัดไป: ' + nextId, true);
+          else qaSetMsg('มีข้อมูลหมายเลขนี้แล้ว', true);
+        } else {
+          // ไม่พบหมายเลข -> เคลียร์ Price/Description เสมอ
+          qaSetMsg('');
+          priceEl.value = '';
+          descEl.value = '';
+        }
+      } catch(e) { console.warn(e); }
+    };
+
+    // Quick Add helpers: qaGetType, qaSetMsg, qaSave, qaDelete
+    function qaGetType() {
+      try { return (document.getElementById('qa-type').value || 'pw'); } catch (e) { return 'pw'; }
+    }
+    function qaSetMsg(msg, isErr) {
+      try {
+        const el = document.getElementById('qa-msg');
+        if (!el) return;
+        el.textContent = msg || '';
+        el.style.color = isErr ? '#c00' : '#444';
+      } catch (e) { /* ignore */ }
+    }
+
+    window.qaSave = async function qaSave() {
+      try {
+        const which = qaGetType();
+        const no = parseInt(document.getElementById('qa-no').value || '0', 10);
+        const price = parseFloat(document.getElementById('qa-price').value || '0');
+        const desc = (document.getElementById('qa-desc').value || '').trim();
+
+        if (!no) { qaSetMsg('กรุณากรอก No ให้ถูกต้อง', true); return; }
+        if (!desc) { qaSetMsg('กรุณากรอก Description', true); return; }
+        if (isNaN(price)) { qaSetMsg('กรุณากรอกราคาให้ถูกต้อง', true); return; }
+
+        // update memory
+        if (which === 'pw') {
+          window.powerDatabase = window.powerDatabase || {};
+          window.powerDatabase[no] = { desc, price };
+        } else {
+          window.controlDatabase = window.controlDatabase || {};
+          window.controlDatabase[no] = { desc, price };
+        }
+
+        // update overrides
+        const currentOverride = readOverride(which) || {};
+        currentOverride[no] = { desc, price };
+        writeOverride(which, currentOverride);
+
+        qaSetMsg('บันทึกสำเร็จ');
+
+        // try to persist to server / fallback
+        await persistDb(which, which === 'pw' ? window.powerDatabase : window.controlDatabase, (m,err) => qaSetMsg(m, err));
+      } catch (e) {
+        console.error(e);
+        qaSetMsg('บันทึกไม่สำเร็จ', true);
+      }
+    };
+
+    window.qaDelete = async function qaDelete() {
+      try {
+        const which = qaGetType();
+        const no = parseInt(document.getElementById('qa-no').value || '0', 10);
+        if (!no) { qaSetMsg('กรุณากรอก No ให้ถูกต้อง', true); return; }
+        if (!confirm('ยืนยันการลบหมายเลข ' + no + ' จาก ' + which + ' database?')) return;
+
+        if (which === 'pw') {
+          window.powerDatabase = window.powerDatabase || {};
+          delete window.powerDatabase[no];
+        } else {
+          window.controlDatabase = window.controlDatabase || {};
+          delete window.controlDatabase[no];
+        }
+
+        const currentOverride = readOverride(which) || {};
+        delete currentOverride[no];
+        writeOverride(which, currentOverride);
+
+        qaSetMsg('ลบสำเร็จ');
+
+        await persistDb(which, which === 'pw' ? window.powerDatabase : window.controlDatabase, (m,err) => qaSetMsg(m, err));
+      } catch (e) {
+        console.error(e);
+        qaSetMsg('ลบไม่สำเร็จ', true);
+      }
+    };
+
+    // Normalize DB globals (use values from loaded scripts or fallback to localStorage)
+    function normalizeDbGlobals() {
+      try {
+        // alias จากสคริปต์ DB ภายนอก
+        if (window.databasePW && !window.powerDatabase) window.powerDatabase = window.databasePW;
+        if (window.powerDatabase && !window.databasePW) window.databasePW = window.powerDatabase;
+        if (window.databaseCT && !window.controlDatabase) window.controlDatabase = window.databaseCT;
+        if (window.controlDatabase && !window.databaseCT) window.databaseCT = window.controlDatabase;
+      } catch (e) { console.warn('alias normalize failed', e); }
+
+      // fallback จาก localStorage เมื่อยังไม่มี object
+      try {
+        if (!window.powerDatabase) {
+          try { window.powerDatabase = JSON.parse(localStorage.getItem('dbLastSavedPW') || '{}'); } catch (e) { window.powerDatabase = {}; }
+        }
+      } catch (e) { window.powerDatabase = window.powerDatabase || {}; }
+      try {
+        if (!window.controlDatabase) {
+          try { window.controlDatabase = JSON.parse(localStorage.getItem('dbLastSavedCT') || '{}'); } catch (e) { window.controlDatabase = {}; }
+        }
+      } catch (e) { window.controlDatabase = window.controlDatabase || {}; }
+    }
+
+    // เรียก normalize ตอนเริ่มต้นและหลัง DB scripts โหลด
+    normalizeDbGlobals();
+    document.addEventListener('db-scripts-loaded', function () {
+      normalizeDbGlobals();
+      try { prefill('pw'); prefill('ct'); } catch(e){}
+    });
+  </script>
+</body>
+</html>
