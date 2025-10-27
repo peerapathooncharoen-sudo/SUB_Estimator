@@ -74,7 +74,6 @@
     @media (max-width: 960px){ .db-grid { grid-template-columns:1fr; } }
   </style>
 
-  <!-- DB loader: version.txt + dbVersionHint -->
   <script>
     // โหลด DatabasePW.js / DatabaseCT.js ด้วย cache-buster จาก version.txt + dbVersionHint
     (function() {
@@ -88,8 +87,6 @@
           });
         }
         try { document.dispatchEvent(new Event('db-scripts-loaded')); } catch (e) {}
-        // เคลียร์ hint หลังโหลดสำเร็จ
-        try { localStorage.removeItem('dbVersionHint'); } catch (e) {}
       }
     })();
   </script>
