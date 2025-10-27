@@ -220,6 +220,43 @@
      When you provide the new layout HTML/CSS I will insert exact styles. */
   </style>
 
+  <!-- [ADD] Shim: map 'unload' listeners to 'pagehide' (+ 'visibilitychange') to avoid deprecation warning -->
+  <script>
+    (function () {
+      const origAdd = EventTarget.prototype.addEventListener;
+      const origRemove = EventTarget.prototype.removeEventListener;
+      const map = new WeakMap();
+
+      EventTarget.prototype.addEventListener = function (type, listener, options) {
+        if (type === 'unload' && typeof listener === 'function') {
+          // register equivalent handlers without using 'unload'
+          const onPageHide = function (ev) { try { listener.call(this, ev); } catch (_) {} };
+          const onVisChange = function (ev) {
+            try { if (document.visibilityState === 'hidden') listener.call(document, ev); } catch (_) {}
+          };
+          map.set(listener, { onPageHide, onVisChange, target: this });
+          // pagehide on the same target; visibilitychange on document as a safety net
+          origAdd.call(this, 'pagehide', onPageHide, options);
+          if (this !== document) origAdd.call(document, 'visibilitychange', onVisChange, options);
+          // do NOT add the deprecated 'unload' to suppress the warning
+          return;
+        }
+        return origAdd.call(this, type, listener, options);
+      };
+
+      EventTarget.prototype.removeEventListener = function (type, listener, options) {
+        if (type === 'unload' && map.has(listener)) {
+          const { onPageHide, onVisChange, target } = map.get(listener);
+          origRemove.call(target, 'pagehide', onPageHide, options);
+          if (target !== document) origRemove.call(document, 'visibilitychange', onVisChange, options);
+          map.delete(listener);
+          return;
+        }
+        return origRemove.call(this, type, listener, options);
+      };
+    })();
+  </script>
+
   <!-- DB loader: ใส่กลับมาให้โหลด DatabasePW.js/DatabaseCT.js -->
   <script>
     // เตรียมตัวแปร (กันกรณียังไม่ถูกประกาศ)
@@ -252,8 +289,9 @@
         // fallback
         loadSequential(String(Date.now()) + (hint ? '-' + hint : ''));
       })();
-    })();
+    })(); 
   </script>
+  
   <script>
     // ถ้าแท็บอื่นบันทึก DB ให้รีโหลดเพื่อดึงเวอร์ชันล่าสุด
     window.addEventListener('storage', function (e) {
@@ -261,7 +299,7 @@
         try { localStorage.removeItem('dbVersionHint'); } catch(_) {}
         location.reload();
       }
-    });
+    }); 
   </script>
   <script>
     // เพิ่ม normalization ให้รองรับทั้งชื่อ powerDatabase/controlDatabase และ databasePW/databaseCT
