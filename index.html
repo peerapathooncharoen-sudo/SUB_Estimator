@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <title>การประมาณราคาค่าแรง SUB</title>
-<style>
+
+  <!-- [ADD] small inline SVG favicon to prevent external 404 -->
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='100%' height='100%' fill='%231976d2'/><text x='50%' y='50%' fill='white' font-size='10' font-family='Arial' dominant-baseline='middle' text-anchor='middle'>S</text></svg>">
+
+  <style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
@@ -452,11 +456,11 @@
         <a href="Edit_database.html"><button type="button">แก้ไข Database</button></a>
       </div>
       -->
-      <div><label>SUB Name:</label><input type="text" id="subName"></div>
-      <div><label>WA:</label><input type="text" id="wa"></div>
-      <div><label>Project:</label><input type="text" id="project"></div>
-      <div><label>Cubicle:</label><input type="text" id="cubicle"></div>
-      <div><label>Serial:</label><input type="text" id="serial"></div>
+      <div><label>SUB Name:</label><input type="text" id="subName" name="subName"></div>
+      <div><label>WA:</label><input type="text" id="wa" name="wa"></div>
+      <div><label>Project:</label><input type="text" id="project" name="project"></div>
+      <div><label>Cubicle:</label><input type="text" id="cubicle" name="cubicle"></div>
+      <div><label>Serial:</label><input type="text" id="serial" name="serial"></div>
     </div>
   </div>
 
@@ -661,11 +665,11 @@
       if (!tableBody) return;
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td><input type="number" value="${item.no}" onchange="fillDescriptionFromNo(this)" oninput="fillDescriptionFromNo(this)"></td>
-        <td><input type="number" value="${item.qty}" min="0" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
-        <td><input type="number" value="${item.price}" min="0" step="0.01" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
-        <td><input type="text" value="${item.desc}" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
-        <td><input type="text" value="0.00" readonly style="background:#f2f2f2; text-align:right;"></td>
+        <td><input name="${type}-no[]" type="number" value="${item.no}" onchange="fillDescriptionFromNo(this)" oninput="fillDescriptionFromNo(this)"></td>
+        <td><input name="${type}-qty[]" type="number" value="${item.qty}" min="0" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
+        <td><input name="${type}-price[]" type="number" value="${item.price}" min="0" step="0.01" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
+        <td><input name="${type}-desc[]" type="text" value="${item.desc}" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
+        <td><input name="${type}-total[]" type="text" value="0.00" readonly style="background:#f2f2f2; text-align:right;"></td>
         <td><button type="button" onclick="removeRow(this, '${type}')">ลบ</button></td>
       `;
       // ผูก Enter ให้ input ทุกช่องในแถว
