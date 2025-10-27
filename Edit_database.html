@@ -91,23 +91,6 @@
         // เคลียร์ hint หลังโหลดสำเร็จ
         try { localStorage.removeItem('dbVersionHint'); } catch (e) {}
       }
-      (async function chooseBuster() {
-        const origin = location.origin;
-        const basePath = location.pathname.replace(/\/[^\/]*$/, '/');
-        const hint = (function(){ try { return localStorage.getItem('dbVersionHint') || ''; } catch(e){ return ''; } })();
-        // ให้เช็ค version.txt ก่อน เพื่อสะท้อนการบันทึกล่าสุด
-        const metaCandidates = [ 'version.txt', 'version.json', 'dist/version.json', origin + basePath + 'dist/version.json' ];
-        for (const cand of metaCandidates) {
-          try {
-            const resp = await fetch(cand, { cache: 'no-store' });
-            if (!resp.ok) continue;
-            const text = await resp.text();
-            try { const j = JSON.parse(text); const v = j.version || j.date || Date.now(); return loadSequential(String(v) + (hint ? '-' + hint : '')); }
-            catch { const t = text.trim(); if (t) return loadSequential(t + (hint ? '-' + hint : '')); }
-          } catch (e) {}
-        }
-        loadSequential(String(Date.now()) + (hint ? '-' + hint : ''));
-      })();
     })();
   </script>
 </head>
