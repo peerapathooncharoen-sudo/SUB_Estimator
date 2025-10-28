@@ -181,7 +181,6 @@
 
   <!-- DB loader + ฟังก์ชันเดิม -->
   <script>
-    // โหลด DatabasePW.js / DatabaseCT.js ด้วย cache-buster จาก version.txt + dbVersionHint
     (function() {
       const files = ['DatabasePW.js','DatabaseCT.js'];
       async function loadSequential(buster) {
@@ -193,8 +192,6 @@
           });
         }
         try { document.dispatchEvent(new Event('db-scripts-loaded')); } catch (e) {}
-        // เคลียร์ hint หลังโหลดสำเร็จ
-        try { localStorage.removeItem('dbVersionHint'); } catch (e) {}
       }
       
     })();
