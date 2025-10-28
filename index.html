@@ -372,8 +372,8 @@
       <h2 style="margin-top:0">Create initial user</h2>
       <p style="color:#444;font-size:13px">No users found. Create the first account to use the app.</p>
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
-        <input id="onboard-username" placeholder="Username" style="padding:8px;border:1px solid #ccc;border-radius:4px">
-        <input id="onboard-password" type="password" placeholder="Password" style="padding:8px;border:1px solid #ccc;border-radius:4px">
+        <input id="onboard-username" aria-label="Username" placeholder="Username" style="padding:8px;border:1px solid #ccc;border-radius:4px">
+        <input id="onboard-password" aria-label="Password" type="password" placeholder="Password" style="padding:8px;border:1px solid #ccc;border-radius:4px">
         <div style="display:flex;gap:8px;justify-content:flex-end">
           <button id="onboard-create" type="button">Create account</button>
         </div>
@@ -487,11 +487,11 @@
         <a href="Edit_database.html"><button type="button">แก้ไข Database</button></a>
       </div>
       -->
-      <div><label>SUB Name:</label><input type="text" id="subName" name="subName"></div>
-      <div><label>WA:</label><input type="text" id="wa" name="wa"></div>
-      <div><label>Project:</label><input type="text" id="project" name="project"></div>
-      <div><label>Cubicle:</label><input type="text" id="cubicle" name="cubicle"></div>
-      <div><label>Serial:</label><input type="text" id="serial" name="serial"></div>
+      <div><label for="subName">SUB Name:</label><input type="text" id="subName" name="subName"></div>
+      <div><label for="wa">WA:</label><input type="text" id="wa" name="wa"></div>
+      <div><label for="project">Project:</label><input type="text" id="project" name="project"></div>
+      <div><label for="cubicle">Cubicle:</label><input type="text" id="cubicle" name="cubicle"></div>
+      <div><label for="serial">Serial:</label><input type="text" id="serial" name="serial"></div>
     </div>
   </div>
 
@@ -532,19 +532,19 @@
 
   <div class="section">
     <div class="info-grid">
-      <div><label>จำนวนชุด (Set):</label><input type="number" id="total-set" value="1" onchange="updateSummary()"></div>
-      <div><label>ราคาต่อชุด:</label><input type="text" id="unit-price" readonly></div>
-      <div><label>ราคารวม (ก่อน Mark-up):</label><input type="text" id="total-price" readonly></div>
+      <div><label for="total-set">จำนวนชุด (Set):</label><input type="number" id="total-set" value="1" onchange="updateSummary()"></div>
+      <div><label for="unit-price">ราคาต่อชุด:</label><input type="text" id="unit-price" readonly></div>
+      <div><label for="total-price">ราคารวม (ก่อน Mark-up):</label><input type="text" id="total-price" readonly></div>
     </div>
     
     <!-- Mark-up section hidden by default, for UI only (affects preview/print output) -->
     <div id="markup-section" style="margin-top:8px" class="info-grid">
       <div>
-        <label>Mark-up (%):</label>
+        <label for="markup-rate">Mark-up (%):</label>
         <input type="number" id="markup-rate" value="30" min="0" max="100" step="0.1" onchange="updateSummary()" oninput="updateSummary()">
       </div>
-      <div><label>จำนวนค่า Mark-up:</label><input type="text" id="markup-amount" readonly></div>
-      <div><label>ราคารวม (รวม Mark-up):</label><input type="text" id="total-price-with-markup" readonly></div>
+      <div><label for="markup-amount">จำนวนค่า Mark-up:</label><input type="text" id="markup-amount" readonly></div>
+      <div><label for="total-price-with-markup">ราคารวม (รวม Mark-up):</label><input type="text" id="total-price-with-markup" readonly></div>
     </div>
   
   <div class="section">
@@ -696,11 +696,11 @@
       if (!tableBody) return;
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td><input name="${type}-no[]" type="number" value="${item.no}" onchange="fillDescriptionFromNo(this)" oninput="fillDescriptionFromNo(this)"></td>
-        <td><input name="${type}-qty[]" type="number" value="${item.qty}" min="0" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
-        <td><input name="${type}-price[]" type="number" value="${item.price}" min="0" step="0.01" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
-        <td><input name="${type}-desc[]" type="text" value="${item.desc}" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
-        <td><input name="${type}-total[]" type="text" value="0.00" readonly style="background:#f2f2f2; text-align:right;"></td>
+        <td><input aria-label="${type} no" name="${type}-no[]" type="number" value="${item.no}" onchange="fillDescriptionFromNo(this)" oninput="fillDescriptionFromNo(this)"></td>
+        <td><input aria-label="${type} qty" name="${type}-qty[]" type="number" value="${item.qty}" min="0" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
+        <td><input aria-label="${type} price" name="${type}-price[]" type="number" value="${item.price}" min="0" step="0.01" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
+        <td><input aria-label="${type} description" name="${type}-desc[]" type="text" value="${item.desc}" onchange="updateTotal('${type}')" oninput="updateTotal('${type}')"></td>
+        <td><input aria-label="${type} total" name="${type}-total[]" type="text" value="0.00" readonly style="background:#f2f2f2; text-align:right;"></td>
         <td><button type="button" onclick="removeRow(this, '${type}')">ลบ</button></td>
       `;
       // ผูก Enter ให้ input ทุกช่องในแถว

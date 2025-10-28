@@ -165,9 +165,9 @@
       </thead>
       <tbody>
         <tr>
-          <td><input id="pw-no" type="number" min="0" placeholder="เช่น 1001" oninput="prefill('pw')"></td>
-          <td><input id="pw-price" type="number" min="0" step="0.01" placeholder="0.00"></td>
-          <td><input id="pw-desc" type="text" placeholder="รายละเอียด..."></td>
+          <td><input id="pw-no" aria-label="Power No" type="number" min="0" placeholder="เช่น 1001" oninput="prefill('pw')"></td>
+          <td><input id="pw-price" aria-label="Power Price" type="number" min="0" step="0.01" placeholder="0.00"></td>
+          <td><input id="pw-desc" aria-label="Power Description" type="text" placeholder="รายละเอียด..."></td>
           <td style="text-align:center"><button type="button" onclick="saveToServer('pw')">บันทึก</button></td>
         </tr>
       </tbody>
@@ -190,9 +190,9 @@
       </thead>
       <tbody>
         <tr>
-          <td><input id="ct-no" type="number" min="0" placeholder="เช่น 2001" oninput="prefill('ct')"></td>
-          <td><input id="ct-price" type="number" min="0" step="0.01" placeholder="0.00"></td>
-          <td><input id="ct-desc" type="text" placeholder="รายละเอียด..."></td>
+          <td><input id="ct-no" aria-label="Control No" type="number" min="0" placeholder="เช่น 2001" oninput="prefill('ct')"></td>
+          <td><input id="ct-price" aria-label="Control Price" type="number" min="0" step="0.01" placeholder="0.00"></td>
+          <td><input id="ct-desc" aria-label="Control Description" type="text" placeholder="รายละเอียด..."></td>
           <td style="text-align:center"><button type="button" onclick="saveToServer('ct')">บันทึก</button></td>
         </tr>
       </tbody>
