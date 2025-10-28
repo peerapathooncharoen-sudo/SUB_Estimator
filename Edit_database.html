@@ -75,19 +75,30 @@
   </style>
 
   <script>
-    // โหลด DatabasePW.js / DatabaseCT.js ด้วย cache-buster จาก version.txt + dbVersionHint
+    // โหลด DatabasePW.js / DatabaseCT.js ด้วย cache-buster (แก้: เรียกใช้จริง)
     (function() {
       const files = ['DatabasePW.js','DatabaseCT.js'];
+
       async function loadSequential(buster) {
         for (const f of files) {
           await new Promise((resolve) => {
             const s = document.createElement('script');
             s.src = f + '?v=' + encodeURIComponent(buster);
-            s.onload = resolve; s.onerror = resolve; document.head.appendChild(s);
+            s.onload = resolve;
+            s.onerror = resolve;
+            document.head.appendChild(s);
           });
         }
         try { document.dispatchEvent(new Event('db-scripts-loaded')); } catch (e) {}
       }
+
+      // เลือกตัว bust เวอร์ชันจาก dbVersionHint หรือใช้ timestamp
+      let buster = '';
+      try { buster = localStorage.getItem('dbVersionHint') || ''; } catch(_) {}
+      if (!buster) buster = String(Date.now());
+
+      // เรียกโหลดทันที
+      loadSequential(buster);
     })();
   </script>
 </head>
@@ -178,24 +189,6 @@
     </table>
     <div id="ct-msg" class="db-msg"></div>
   </div>
-
-  <!-- DB loader + ฟังก์ชันเดิม -->
-  <script>
-    (function() {
-      const files = ['DatabasePW.js','DatabaseCT.js'];
-      async function loadSequential(buster) {
-        for (const f of files) {
-          await new Promise((resolve) => {
-            const s = document.createElement('script');
-            s.src = f + '?v=' + encodeURIComponent(buster);
-            s.onload = resolve; s.onerror = resolve; document.head.appendChild(s);
-          });
-        }
-        try { document.dispatchEvent(new Event('db-scripts-loaded')); } catch (e) {}
-      }
-      
-    })();
-  </script>
 
   <!-- SECTION: UI handlers (prefill, setMsg, overrides) -->
   <script>
@@ -439,7 +432,7 @@
           priceEl.value = item.price != null ? String(item.price) : '';
           descEl.value = item.desc != null ? String(item.desc) : '';
           const nextId = getNextIdSuggestion && getNextIdSuggestion(which);
-          if (nextId) qaSetMsg('มีข้อมูลหมายเลขนี้แล้ว — แนะนำหมายเลขถัดไป: ' + nextId, true);
+          if (nextId) qaSetMsg('มีข้อมูลหมายเลขถัดไป: ' + nextId, true);
           else qaSetMsg('มีข้อมูลหมายเลขนี้แล้ว', true);
         } else {
           // ไม่พบหมายเลข -> เคลียร์ Price/Description เสมอ
@@ -549,7 +542,7 @@
       } catch (e) { window.controlDatabase = window.controlDatabase || {}; }
     }
 
-    // เรียก normalize ตอนเริ่มต้นและหลัง DB scripts โหลด
+    // เรียก normalize ตอนเริ่ม และเมื่อสคริปต์ DB โหลดเสร็จให้ prefill อัตโนมัติ
     normalizeDbGlobals();
     document.addEventListener('db-scripts-loaded', function () {
       normalizeDbGlobals();
