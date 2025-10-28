@@ -74,6 +74,16 @@
     @media (max-width: 960px){ .db-grid { grid-template-columns:1fr; } }
   </style>
 
+  <!-- [ADD] Early hook: กันกรณี db-scripts-loaded ยิงก่อนลิสต์เนอร์ส่วนล่างถูกผูก -->
+  <script>
+    (function () {
+      window.__dbScriptsLoaded = false;
+      document.addEventListener('db-scripts-loaded', function () {
+        window.__dbScriptsLoaded = true;
+      });
+    })();
+  </script>
+
   <script>
     // โหลด DatabasePW.js / DatabaseCT.js ด้วย cache-buster (แก้: เรียกใช้จริง)
     (function() {
@@ -432,7 +442,7 @@
           priceEl.value = item.price != null ? String(item.price) : '';
           descEl.value = item.desc != null ? String(item.desc) : '';
           const nextId = getNextIdSuggestion && getNextIdSuggestion(which);
-          if (nextId) qaSetMsg('มีข้อมูลหมายเลขถัดไป: ' + nextId, true);
+          if (nextId) qaSetMsg('มีข้อมูลแล้วแนะนำหมายเลขถัดไป: ' + nextId, true);
           else qaSetMsg('มีข้อมูลหมายเลขนี้แล้ว', true);
         } else {
           // ไม่พบหมายเลข -> เคลียร์ Price/Description เสมอ
@@ -548,6 +558,19 @@
       normalizeDbGlobals();
       try { prefill('pw'); prefill('ct'); } catch(e){}
     });
+
+    // [ADD] กรณีอีเวนต์เกิดก่อนลิสต์เนอร์ด้านบนถูกผูก ให้รันทันที + ทำ retry เผื่อพลาดอีเวนต์จากแคช
+    if (window.__dbScriptsLoaded) {
+      try { normalizeDbGlobals(); prefill('pw'); prefill('ct'); } catch (e) {}
+    } else {
+      (function retry(i = 0) {
+        if (i > 10 || (window.powerDatabase && window.controlDatabase)) {
+          try { normalizeDbGlobals(); prefill('pw'); prefill('ct'); } catch (e) {}
+          return;
+        }
+        setTimeout(() => retry(i + 1), 150);
+      })();
+    }
   </script>
 </body>
 </html>
