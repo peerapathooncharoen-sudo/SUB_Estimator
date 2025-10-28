@@ -224,7 +224,7 @@
      When you provide the new layout HTML/CSS I will insert exact styles. */
   </style>
 
-  <!-- [ADD] Shim: map 'unload' listeners to 'pagehide' (+ 'visibilitychange') to avoid deprecation warning -->
+  <!-- [ADD] Shim: map 'pagehide' listeners to 'pagehide' (+ 'visibilitychange') to avoid deprecation warning -->
   <script>
     (function () {
       const origAdd = EventTarget.prototype.addEventListener;
@@ -242,8 +242,8 @@
       }
 
       EventTarget.prototype.addEventListener = function (type, listener, options) {
-        if (type === 'unload' && typeof listener === 'function') {
-          console.info('[unload->pagehide shim] addEventListener detected\nstack:\n' + (new Error().stack || ''));
+        if (type === 'pagehide' && typeof listener === 'function') {
+          console.info('[pagehide shim] addEventListener detected\nstack:\n' + (new Error().stack || ''));
           attachMapped(this, listener, options);
           return;
         }
@@ -251,7 +251,7 @@
       };
 
       EventTarget.prototype.removeEventListener = function (type, listener, options) {
-        if (type === 'unload' && map.has(listener)) {
+        if (type === 'pagehide' && map.has(listener)) {
           const { onPageHide, onVisChange, target } = map.get(listener);
           try { origRemove.call(target, 'pagehide', onPageHide, options); } catch(_) {}
           try { if (target !== document) origRemove.call(document, 'visibilitychange', onVisChange, options); } catch(_) {}
@@ -261,9 +261,9 @@
         return origRemove.call(this, type, listener, options);
       };
 
-      function hookOnUnload(obj, label) {
-        const storeKey = Symbol(label + '.onunload');
-        Object.defineProperty(obj, 'onunload', {
+      function hookpagehide (obj, label) {
+        const storeKey = Symbol(label + '.pagehide');
+        Object.defineProperty(obj, 'pagehide', {
           configurable: true,
           enumerable: true,
           get() { return obj[storeKey] || null; },
@@ -277,7 +277,7 @@
               map.delete(prev);
             }
             if (typeof fn === 'function') {
-              console.info('[unload->pagehide shim] ' + label + '.onunload assignment detected\nstack:\n' + (new Error().stack || ''));
+              console.info('[pagehide shim] ' + label + '.pagehide assignment detected\nstack:\n' + (new Error().stack || ''));
               obj[storeKey] = fn;
               attachMapped(obj, fn);
             } else {
@@ -287,8 +287,8 @@
         });
       }
 
-      hookOnUnload(window, 'window');
-      hookOnUnload(document, 'document');
+      hookpagehide (window, 'window');
+      hookpagehide (document, 'document');
     })();
   </script>
 
