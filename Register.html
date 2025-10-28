@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Register</title>
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='100%' height='100%' fill='%231976d2'/><text x='50%' y='50%' fill='white' font-size='10' font-family='Arial' dominant-baseline='middle' text-anchor='middle'>S</text></svg>">
   <style>
     body{font-family:Arial,Helvetica,sans-serif;background:#f3f3f3;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
     .box{background:#fff;padding:20px 24px;border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.08);width:360px}
@@ -18,11 +19,11 @@
   <div class="box">
     <h2>สมัครสมาชิก</h2>
     <form id="regForm">
-      <label>ชื่อผู้ใช้</label>
+      <label for="r-username">ชื่อผู้ใช้</label>
       <input id="r-username" name="username" type="text" required>
-      <label>รหัสผ่าน</label>
+      <label for="r-password">รหัสผ่าน</label>
       <input id="r-password" name="password" type="password" required>
-      <label>ยืนยันรหัสผ่าน</label>
+      <label for="r-password2">ยืนยันรหัสผ่าน</label>
       <input id="r-password2" name="password2" type="password" required>
       <div class="row">
         <button type="submit">Register</button>
