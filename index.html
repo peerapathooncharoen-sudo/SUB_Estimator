@@ -354,7 +354,7 @@
       normalizeDbGlobals();
     });
   </script>
-</head>
+</head>  
 <body>
   
   <!-- โหลด auth ก่อนสคริปต์หลัก เพื่อให้ตรวจสิทธิ์ก่อนทำงาน -->
@@ -564,6 +564,17 @@
     <div id="saved-output" style="background-color:#fff; padding:16px; margin-top:10px; border:1px solid #ddd;"></div>
   </div>
 
+  <!-- [ADD] money format helpers (ใช้โดย updateTotal/getTableSumFromTotals/updateSummary) -->
+  <script>
+    function formatMoney(n){
+      return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        .format(Number(n) || 0);
+    }
+    function unformat(s){
+      return parseFloat(String(s).replace(/,/g, '')) || 0;
+    }
+  </script>
+
   <script>
   // REPLACE unsafe direct references/logs with guarded versions.
   if (typeof window !== 'undefined' && typeof window.powerDatabase !== 'undefined') {
@@ -725,12 +736,12 @@
         const qty = parseFloat(row.cells[1].children[0].value) || 0;
         const price = parseFloat(row.cells[2].children[0].value) || 0;
         const rowTotal = qty * price;
-        // update per-row Total display
         const totalInput = row.cells[4].children[0];
-        totalInput.value = rowTotal.toFixed(2);
+        totalInput.value = formatMoney(rowTotal);
         sectionTotal += rowTotal;
       });
-      document.getElementById(`${type}-price`).textContent = `${type.charAt(0).toUpperCase() + type.slice(1)} Price: ` + sectionTotal.toFixed(2) + " Baht";
+      document.getElementById(`${type}-price`).textContent =
+        `${type.charAt(0).toUpperCase() + type.slice(1)} Price: ` + formatMoney(sectionTotal) + " Baht";
       updateSummary();
     }
 
@@ -739,35 +750,29 @@
       let sum = 0;
       rows.forEach(row => {
         const totalInput = row.cells[4] && row.cells[4].children[0];
-        if (totalInput) sum += parseFloat(totalInput.value) || 0;
+        if (totalInput) sum += unformat(totalInput.value);
       });
       return sum;
     }
 
-function updateSummary() {
-  const powerTotal = getTableSumFromTotals("power-table-body");
-  const controlTotal = getTableSumFromTotals("control-table-body");
-  const combined = powerTotal + controlTotal;
-  const totalSet = parseFloat(document.getElementById("total-set").value) || 1;
-
-  // ราคาต่อชุด (unit price) = combined
-  document.getElementById("unit-price").value = combined.toFixed(2);
-
-  // ราคารวมก่อน mark-up = combined * sets
-  const subtotal = combined * totalSet;
-  document.getElementById("total-price").value = subtotal.toFixed(2);
-
-  // อ่านเปอร์เซ็นต์จาก input (UI-only) และคำนวณ
-  const rateInput = document.getElementById("markup-rate");
-  const rate = (rateInput && !isNaN(parseFloat(rateInput.value))) ? (parseFloat(rateInput.value) / 100) : 0;
-  const markupAmount = subtotal * rate;
-  const totalWithMarkup = subtotal + markupAmount;
-
-      const markupAmtEl = document.getElementById('markup-amount');
-      const totalWithMarkupEl = document.getElementById('total-price-with-markup');
-      if (markupAmtEl) markupAmtEl.value = markupAmount.toFixed(2);
-      if (totalWithMarkupEl) totalWithMarkupEl.value = totalWithMarkup.toFixed(2);
-    };
+  // [MODIFY] ใส่ลูกน้ำให้ทุกช่องสรุปผลลัพธ์
+  function updateSummary() {
+    const powerTotal = getTableSumFromTotals("power-table-body");
+    const controlTotal = getTableSumFromTotals("control-table-body");
+    const combined = powerTotal + controlTotal;
+    const totalSet = parseFloat(document.getElementById("total-set").value) || 1;
+    document.getElementById("unit-price").value = formatMoney(combined);
+    const subtotal = combined * totalSet;
+    document.getElementById("total-price").value = formatMoney(subtotal);
+    const rateInput = document.getElementById("markup-rate");
+    const rate = (rateInput && !isNaN(parseFloat(rateInput.value))) ? (parseFloat(rateInput.value)/100) : 0;
+    const markupAmount = subtotal * rate;
+    const totalWithMarkup = subtotal + markupAmount;
+    const markupAmtEl = document.getElementById('markup-amount');
+    const totalWithMarkupEl = document.getElementById('total-price-with-markup');
+    if (markupAmtEl) markupAmtEl.value = formatMoney(markupAmount);
+    if (totalWithMarkupEl) totalWithMarkupEl.value = formatMoney(totalWithMarkup);
+  };
 
     // เพิ่มแถวเริ่มต้น 1 แถวให้แต่ละตาราง หากยังว่าง
     document.addEventListener('DOMContentLoaded', () => {
@@ -952,7 +957,7 @@ function updateSummary() {
 		captureWrapper.style.background = '#fff';
 		captureWrapper.style.display = 'block';
 		captureWrapper.style.padding = '0';
-		captureWrapper.style.margin = '0';
+		captureWrapper.style.margin = '0'; 
 		// append exportNode inside captureWrapper
 		captureWrapper.appendChild(exportNode);
 		exportWrapper.appendChild(captureWrapper);
@@ -1041,7 +1046,7 @@ try {
 		const marginTopBottom = 0;
 		const usableW = pdfW - marginLeft - marginRight;
 		const usableH = pdfH - marginTopBottom * 2;
-
+ 
 		// content size in mm (capture area)
 		const contentWmm = captureWidthMm;
 		const contentHmm = captureHeightMm;

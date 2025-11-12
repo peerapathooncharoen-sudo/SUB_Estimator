@@ -8,56 +8,23 @@
   <style>
     body{font-family:Arial,Helvetica,sans-serif;background:#f3f3f3;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
     .box{background:#fff;padding:20px 24px;border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.08);width:360px}
-    label{display:block;font-size:13px;margin-top:8px}
-    input{width:100%;padding:8px;margin-top:6px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}
-    .row{display:flex;gap:8px;margin-top:14px}
-    button{flex:1;padding:8px;border:0;background:#1976d2;color:#fff;border-radius:4px;cursor:pointer}
-    .link{font-size:12px;color:#666;text-align:center;margin-top:10px}
+    h2{margin:0;font-size:22px}
+    p{margin-top:12px;font-size:13px;line-height:1.5}
+    button{padding:8px;border:0;background:#1976d2;color:#fff;border-radius:4px;cursor:pointer;width:100%}
+    a{text-decoration:none}
   </style>
 </head>
 <body>
   <div class="box">
-    <h2>สมัครสมาชิก</h2>
-    <form id="regForm">
-      <label for="r-username">ชื่อผู้ใช้</label>
-      <input id="r-username" name="username" type="text" required>
-      <label for="r-password">รหัสผ่าน</label>
-      <input id="r-password" name="password" type="password" required>
-      <label for="r-password2">ยืนยันรหัสผ่าน</label>
-      <input id="r-password2" name="password2" type="password" required>
-      <div class="row">
-        <button type="submit">Register</button>
-      </div>
-      <div class="link"><a href="login.html">กลับไปหน้า Login</a></div>
-    </form>
+    <h2>Passcode Mode</h2>
+    <p>
+      ระบบถูกปรับให้ใช้ Passcode เดียวในการเข้าใช้งานแล้ว.<br>
+      หากต้องการเปลี่ยนรหัส ให้แก้ไขค่าตัวแปร PASSCODE ในไฟล์ Auth.js.<br>
+      หน้า Register เดิมถูกปิดการใช้งาน.
+    </p>
+    <div style="margin-top:12px">
+      <a href="login.html"><button type="button">ไปหน้าใส่ Passcode</button></a>
+    </div>
   </div>
-
-<script src="Auth.js"></script>
-<script>
-document.getElementById('regForm').addEventListener('submit', async function(e){
-  e.preventDefault();
-  const u = document.getElementById('r-username').value.trim();
-  const p = document.getElementById('r-password').value;
-  const p2 = document.getElementById('r-password2').value;
-  if (!u) return alert('กรุณากรอกชื่อผู้ใช้');
-  if (!p) return alert('กรุณากรอกรหัสผ่าน');
-  if (p !== p2) return alert('รหัสผ่านไม่ตรงกัน');
-
-  if (!window.registerUser) return alert('register function not available (auth.js not loaded)');
-
-  try {
-    const res = await window.registerUser(u, p);
-    if (res && res.success) {
-      alert('สมัครสมาชิกสำเร็จ โปรดล็อกอิน');
-      location.href = 'login.html';
-    } else {
-      alert(res && res.error ? res.error : 'สมัครสมาชิกล้มเหลว');
-    }
-  } catch(err) {
-    console.error(err);
-    alert('เกิดข้อผิดพลาดขณะสมัคร');
-  }
-});
-</script>
 </body>
 </html>
