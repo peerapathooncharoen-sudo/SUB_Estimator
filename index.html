@@ -366,29 +366,15 @@
     <button id="btn-logout" type="button">Logout</button>
   </div>
 
-  <!-- Onboarding modal: shown only when no users exist -->
-  <div id="onboard-modal" aria-hidden="true" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:9999">
-    <div style="background:#fff;padding:18px;border-radius:8px;max-width:420px;width:100%;box-shadow:0 6px 24px rgba(0,0,0,.3)">
-      <h2 style="margin-top:0">Create initial user</h2>
-      <p style="color:#444;font-size:13px">No users found. Create the first account to use the app.</p>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
-        <input id="onboard-username" aria-label="Username" placeholder="Username" style="padding:8px;border:1px solid #ccc;border-radius:4px">
-        <input id="onboard-password" aria-label="Password" type="password" placeholder="Password" style="padding:8px;border:1px solid #ccc;border-radius:4px">
-        <div style="display:flex;gap:8px;justify-content:flex-end">
-          <button id="onboard-create" type="button">Create account</button>
-        </div>
-        <div id="onboard-msg" style="color:#c00;font-size:13px;min-height:18px"></div>
-      </div>
-    </div>
-  </div>
-
 <script>
-  // ensure DOM ready then init auth UI and listener
   document.addEventListener('DOMContentLoaded', function () {
-    // [REMOVE] บล็อก onboarding เดิม (ระบบ passcode ไม่มีหลายผู้ใช้)
-
-    // [KEEP] ตรวจสิทธิ์: ถ้าไม่มี session passcode จะถูกรีไดเร็ก
-    if (!window.ensureAuth || !window.ensureAuth()) return;
+    if (!window.ensureAuth) {
+      console.warn('[index] ensureAuth missing, cannot validate session');
+      return;
+    }
+    const ok = window.ensureAuth();
+    console.log('[index] ensureAuth returned', ok);
+    if (!ok) return;
 
     const s = window.getSession && window.getSession();
     const welcome = document.getElementById('auth-welcome');

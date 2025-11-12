@@ -30,24 +30,35 @@
   </div>
 <script src="Auth.js"></script>
 <script>
-document.getElementById('loginForm').addEventListener('submit', async function(e){
-  e.preventDefault();
-  const code = document.getElementById('l-passcode').value.trim();
-  if(!code){ alert('กรุณากรอก passcode'); return; }
-  if(!window.verifyCredentials){ alert('Auth.js ไม่ถูกโหลด'); return; }
-  try{
-    const res = await window.verifyCredentials(null, code);
-    if(res && res.success){
-      window.setSession && window.setSession('passcode');
-      location.href = 'index.html';
-    }else{
-      alert('รหัสไม่ถูกต้อง');
+  // ถ้ามี session อยู่แล้ว ให้เด้งกลับหน้าแรก
+  try {
+    if (window.getSession && window.getSession() && window.getSession().username) {
+      location.replace('index.html');
     }
-  }catch(err){
-    console.error(err);
-    alert('เกิดข้อผิดพลาด');
-  }
-});
+  } catch (_) {}
+
+  document.getElementById('loginForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const code = document.getElementById('l-passcode').value.trim();
+    if(!code){ alert('กรุณากรอก passcode'); return; }
+    if(!window.verifyCredentials){ alert('Auth.js ไม่ถูกโหลด'); return; }
+    try{
+      const res = await window.verifyCredentials(null, code);
+      console.log('[login] verifyCredentials result =', res);
+      if(res && res.success){
+        window.setSession && window.setSession('passcode');
+        console.log('[login] session set, redirecting...');
+        location.href = 'index.html';
+      }else{
+        alert('รหัสไม่ถูกต้อง');
+      }
+    }catch(err){
+      console.error(err);
+      alert('เกิดข้อผิดพลาด');
+    }
+  });
+  // แนะนำ: ถ้าเปิดไม่ได้จาก http://localhost ให้เปิดไฟล์โดยตรง (file://)
+  console.log('Tip: หากเปิด http://localhost:8080 ไม่ได้ ให้ดับเบิลคลิกไฟล์ index.html หรือเปิดผ่าน file:///C:/Users/Admin/Desktop/SUB-Estimator/login.html');
 </script>
 </body>
 </html>
