@@ -2,642 +2,646 @@
 var powerDatabase = {
     "1": {
         "desc": "ติดตั้ง MCCB 0-250A",
-        "price": 500
+        "price": 16.90
     },
     "2": {
         "desc": "เดินสายไฟ MCCB 0-100A(3เส้น)",
-        "price": 500
+        "price": 38.35
     },
     "3": {
         "desc": "ติดตั้ง CT 1 ชุด(3ตัว=1ชุด)",
-        "price": 500
+        "price": 16.90
     },
     "4": {
         "desc": "เดินสายไฟ MCCB 125-160A(3เส้น)",
-        "price": 500
+        "price": 57.52
     },
     "5": {
         "desc": "เดินบัสบาร์ MCCB 125-160A(3เส้น)",
-        "price": 500
+        "price": 63.36
     },
     "6": {
         "desc": "เดินบัสบาร์ MCCB 125-160A(6เส้น)",
-        "price": 500
+        "price": 81.11
     },
     "7": {
         "desc": "เดินบัสบาร์ MCCB 125-160A(6เส้น)ต่อ 1จุด",
-        "price": 500
+        "price": 125.66
     },
     "8": {
         "desc": "ติดตั้ง KWH ต่อ 1ตัว",
-        "price": 500
+        "price": 25.15
     },
     "9": {
         "desc": "เดินสายไฟ MCCB 200-250A(3เส้น)",
-        "price": 500
+        "price": 66.00
     },
     "10": {
         "desc": "เดินบัสบาร์ MCCB 200-250A(6เส้น)",
-        "price": 500
+        "price": 85.80
     },
     "11": {
         "desc": "เดินบัสบาร์ MCCB 200-250A ต่อกัน 1จุด",
-        "price": 500
+        "price": 137.28
     },
     "12": {
         "desc": "เดินบัสบาร์ MCCB 200-250A ต่อกัน 2จุด",
-        "price": 500
+        "price": 182.59
     },
     "13": {
         "desc": "ติดตั้ง MCCB 300-1600A",
-        "price": 500
+        "price": 33.79
     },
     "14": {
         "desc": "เดินบัสบาร์ MCCB 300-400A(6เส้น)",
-        "price": 500
+        "price": 190.08
     },
     "15": {
         "desc": "เดินบัสบาร์ MCCB 300-400A ต่อกัน 1จุด",
-        "price": 500
+        "price": 274.56
     },
     "16": {
         "desc": "เดินบัสบาร์ MCCB 300-400A ต่อกัน 2จุด",
-        "price": 500
+        "price": 369.60
     },
     "17": {
         "desc": "เดินบัสบาร์ MCCB 300-400A ต่อกัน 3จุด",
-        "price": 500
+        "price": 443.52
     },
     "18": {
         "desc": "ติดตั้ง LOAD CENTER ต่อ 1ตัว",
-        "price": 500
+        "price": 33.79
     },
     "19": {
         "desc": "เดินบัสบาร์ MCCB 500-630A(6เส้นเบิ้ล2)",
-        "price": 500
+        "price": 297.00
     },
     "20": {
         "desc": "เดินบัสบาร์ MCCB 500-630A ต่อกัน 1จุด",
-        "price": 500
+        "price": 343.20
     },
     "21": {
         "desc": "เดินบัสบาร์ MCCB 500-630A ต่อกัน 2จุด",
-        "price": 500
+        "price": 443.52
     },
     "22": {
         "desc": "เดินบัสบาร์ MCCB 500-630A ต่อกัน 3จุด",
-        "price": 500
+        "price": 517.44
     },
     "23": {
         "desc": "เดินบัสบาร์ MCCB 800-1250A(6เส้นเบิ้ล2)",
-        "price": 500
+        "price": 313.50
     },
     "24": {
         "desc": "เดินบัสบาร์ MCCB 800-1250A ต่อกัน 1จุด",
-        "price": 500
+        "price": 343.20
     },
     "25": {
         "desc": "เดินบัสบาร์ MCCB 800-1250A ต่อกัน 2จุด",
-        "price": 500
+        "price": 443.52
     },
     "26": {
         "desc": "เดินบัสบาร์ MCCB 800-1250A ต่อกัน 3จุด",
-        "price": 500
+        "price": 517.44
     },
     "27": {
-        "desc": "เดินบัสบาร์ MCCB 1500-1600A(6เส้นเบิ้ล2)",
-        "price": 500
+        "desc": "เดินบัสบาร์ MCCB 1500-1600A(6เส้นเบิ้ล3)",
+        "price": 343.20
     },
     "28": {
         "desc": "เดินบัสบาร์ MCCB 1500-1600A ต่อกัน 1จุด",
-        "price": 500
+        "price": 411.84
     },
     "29": {
         "desc": "เดินบัสบาร์ MCCB 1500-1600A ต่อกัน 2จุด",
-        "price": 500
+        "price": 517.44
     },
     "30": {
         "desc": "เดินบัสบาร์ MCCB 1500-1600A ต่อกัน 3จุด",
-        "price": 500
+        "price": 665.28
     },
     "31": {
         "desc": "ติดตั้ง ACB 800-1000A FIX",
-        "price": 500
+        "price": 132.00
     },
     "32": {
         "desc": "ติดตั้ง ACB 800-1000A DRAWOUT",
-        "price": 500
+        "price": 148.50
     },
     "33": {
         "desc": "เดินบัสบาร์ ACB 800-1000A(6เส้น)",
-        "price": 500
+        "price": 380.16
     },
     "34": {
         "desc": "เดินบัสบาร์ ACB 800-1000A ต่อกัน 1จุด",
-        "price": 500
+        "price": 549.12
     },
     "35": {
         "desc": "เดินบัสบาร์ ACB 800-1000A ต่อกัน 2จุด",
-        "price": 500
+        "price": 739.20
     },
     "36": {
         "desc": "เดินบัสบาร์ ACB 800-1000A ต่อกัน 3จุด",
-        "price": 500
+        "price": 887.04
     },
     "37": {
         "desc": "ติดตั้ง ACB 1200-1600A",
-        "price": 500
+        "price": 135.17
     },
     "38": {
         "desc": "เดินบัสบาร์ ACB 1200-1600A(6เส้นเบิ้ล2)",
-        "price": 500
+        "price": 739.20
     },
     "39": {
         "desc": "เดินบัสบาร์ ACB 1200-1600A ต่อกัน 1จุด",
-        "price": 500
+        "price": 887.04
     },
     "40": {
         "desc": "เดินบัสบาร์ ACB 1200-1600A ต่อกัน 2จุด",
-        "price": 500
+        "price": 1034.88
     },
     "41": {
         "desc": "เดินบัสบาร์ ACB 1200-1600A ต่อกัน 3จุด",
-        "price": 500
+        "price": 1182.72
     },
     "42": {
         "desc": "ติดตั้ง ACB 2000-2500A FIX",
-        "price": 500
+        "price": 132.00
     },
     "43": {
         "desc": "ติดตั้ง ACB 2000-2500A DRAWOUT",
-        "price": 500
+        "price": 148.50
     },
     "44": {
         "desc": "เดินบัสบาร์ ACB 2000-2500A(6เส้นเบิ้ล3)",
-        "price": 500
+        "price": 887.04
     },
     "45": {
         "desc": "เดินบัสบาร์ ACB 2000-2500A ต่อกัน 1จุด",
-        "price": 500
+        "price": 1034.88
     },
     "46": {
         "desc": "เดินบัสบาร์ ACB 2000-2500A ต่อกัน 2จุด",
-        "price": 500
+        "price": 1182.72
     },
     "47": {
         "desc": "เดินบัสบาร์ ACB 2000-2500A ต่อกัน 3จุด",
-        "price": 500
+        "price": 1330.56
     },
     "48": {
         "desc": "ติดตั้ง ACB 3000-3200A FIX",
-        "price": 500
+        "price": 132.00
     },
     "49": {
         "desc": "ติดตั้ง ACB 3000-3200A DRAWOUT",
-        "price": 500
+        "price": 148.50
     },
     "50": {
         "desc": "เดินบัสบาร์ ACB 3000-3200A(6เส้นเบิ้ล3)",
-        "price": 500
+        "price": 1034.88
     },
     "51": {
         "desc": "เดินบัสบาร์ ACB 3000-3200A ต่อกัน 1จุด",
-        "price": 500
+        "price": 1267.20
     },
     "52": {
         "desc": "เดินบัสบาร์ ACB 3000-3200A ต่อกัน 2จุด",
-        "price": 500
+        "price": 1584.00
     },
     "53": {
         "desc": "เดินบัสบาร์ ACB 3000-3200A ต่อกัน 3จุด",
-        "price": 500
+        "price": 1900.80
     },
     "54": {
         "desc": "ติดตั้ง ACB 4000A FIX\/DRAWOUT",
-        "price": 500
+        "price": 219.65
     },
     "55": {
         "desc": "เดินบัสบาร์ ACB 4000A(6เส้นเบิ้ล3)",
-        "price": 500
+        "price": 1182.72
     },
     "56": {
         "desc": "เดินบัสบาร์ ACB 4000A ต่อกัน 1จุด",
-        "price": 500
+        "price": 1425.60
     },
     "57": {
         "desc": "เดินบัสบาร์ ACB 4000A ต่อกัน 2จุด",
-        "price": 500
+        "price": 1742.40
     },
     "58": {
         "desc": "เดินบัสบาร์ ACB 4000A ต่อกัน 3จุด",
-        "price": 500
+        "price": 2059.20
     },
     "59": {
         "desc": "ติดตั้ง ACB 5000A FIX\/DRAWOUT",
-        "price": 500
+        "price": 532.22
     },
     "60": {
         "desc": "เดินบัสบาร์ ACB 5000A(6เส้นเบิ้ล4)",
-        "price": 500
+        "price": 1584.00
     },
     "61": {
         "desc": "เดินบัสบาร์ ACB 5000A ต่อกัน 1จุด",
-        "price": 500
+        "price": 2059.20
     },
     "62": {
         "desc": "เดินบัสบาร์ ACB 5000A ต่อกัน 2จุด",
-        "price": 500
+        "price": 2534.40
     },
     "63": {
         "desc": "เดินบัสบาร์ ACB 5000A ต่อกัน 3จุด",
-        "price": 500
+        "price": 3009.60
     },
     "64": {
         "desc": "BUSBAR 0-250A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 253.44
     },
     "65": {
         "desc": "BUSBAR 400A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 253.44
     },
     "66": {
         "desc": "BUSBAR 630A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 253.44
     },
     "67": {
         "desc": "BUSBAR 800A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 274.56
     },
     "68": {
         "desc": "BUSBAR 1000A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 274.56
     },
     "69": {
         "desc": "BUSBAR 1200A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 549.12
     },
     "70": {
         "desc": "BUSBAR 1600A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 591.36
     },
     "71": {
         "desc": "BUSBAR 2000A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 591.36
     },
     "72": {
         "desc": "BUSBAR 2500A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 591.36
     },
     "73": {
         "desc": "BUSBAR 3200A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 591.36
     },
     "74": {
         "desc": "BUSBAR 4000A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 633.60
     },
     "75": {
         "desc": "BUSBAR 5000A\/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 1425.60
     },
     "76": {
         "desc": "ติดตั้ง HRC FUSE+MAGNATIC+CAP 0-50 Kvar MG\/1-6 STEP",
-        "price": 500
+        "price": 316.80
     },
     "77": {
         "desc": "ติดตั้ง HRC FUSE+MAGNATIC+CAP 0-50 Kvar MG\/1-12 STEP",
-        "price": 500
+        "price": 422.40
     },
     "78": {
         "desc": "ติดตั้ง HRC FUSE+MAGNATIC+CAP 0-50 Kvar ABB\/1-6 STEP",
-        "price": 500
+        "price": 422.40
     },
     "79": {
         "desc": "ติดตั้ง HRC FUSE+MAGNATIC+CAP 0-50 Kvar ABB\/1-12 STEP",
-        "price": 500
+        "price": 528.00
     },
     "80": {
         "desc": "ติดตั้ง HRC FUSE+MAGNATIC+CAP 60-100 Kvar MG\/1-6 STEP",
-        "price": 500
+        "price": 422.40
     },
     "81": {
         "desc": "ติดตั้ง HRC FUSE+MAGNATIC+CAP 60-100 Kvar MG\/1-12 STEP",
-        "price": 500
+        "price": 528.00
     },
     "82": {
         "desc": "ติดตั้ง HRC FUSE+MAGNATIC+CAP 60-100 Kvar ABB\/1-6 STEP",
-        "price": 500
+        "price": 528.00
     },
     "83": {
         "desc": "ติดตั้ง HRC FUSE+MAGNATIC+CAP 60-100 Kvar ABB\/1-12 STEP",
-        "price": 500
+        "price": 633.60
     },
     "84": {
         "desc": "ติดตั้ง CHOCK สำหรับ CAPACITOR 60-100 Kvar 1-6 STEP",
-        "price": 500
+        "price": 823.68
     },
     "85": {
         "desc": "ติดตั้ง CHOCK สำหรับ CAPACITOR 60-100 Kvar 1-12 STEP",
-        "price": 500
+        "price": 1372.80
     },
     "86": {
         "desc": "POWER CAP 0-30 Kvar MG\/ABB 1-6 STEP",
-        "price": 500
+        "price": 760.32
     },
     "87": {
         "desc": "POWER CAP 0-30 Kvar MG\/ABB 1-12 STEP",
-        "price": 500
+        "price": 1267.20
     },
     "88": {
         "desc": "POWER CAP 40-60 Kvar MG\/ABB 1-6 STEP",
-        "price": 500
+        "price": 1098.24
     },
     "89": {
         "desc": "POWER CAP 40-60 Kvar MG\/ABB 1-12 STEP",
-        "price": 500
+        "price": 1485.00
     },
     "90": {
         "desc": "POWER CAP 75-80 Kvar MG\/ABB 1-6 STEP",
-        "price": 500
+        "price": 1182.72
     },
     "91": {
         "desc": "POWER CAP 75-80 Kvar MG\/ABB 1-12 STEP",
-        "price": 500
+        "price": 1584.00
     },
     "92": {
         "desc": "POWER CAP 90-100 Kvar MG\/ABB 1-6 STEP",
-        "price": 500
+        "price": 1900.80
     },
     "93": {
         "desc": "POWER CAP 90-100 Kvar MG\/ABB 1-12 STEP",
-        "price": 500
+        "price": 2534.40
     },
     "94": {
         "desc": "POWER CAP 40-60 Kvar MG\/ABB 1-6 STEP+CHOCK",
-        "price": 500
+        "price": 2172.72
     },
     "95": {
         "desc": "POWER CAP 40-60 Kvar MG\/ABB 1-12 STEP+CHOCK",
-        "price": 500
+        "price": 2574.00
     },
     "96": {
         "desc": "POWER CAP 75-80 Kvar MG\/ABB 1-6 STEP+CHOCK",
-        "price": 500
+        "price": 2217.60
     },
     "97": {
         "desc": "POWER CAP 75-80 Kvar MG\/ABB 1-12 STEP+CHOCK",
-        "price": 500
+        "price": 2937.00
     },
     "98": {
         "desc": "POWER CAP 90-100 Kvar MG\/ABB 1-6 STEP+CHOCK",
-        "price": 500
+        "price": 3168.00
     },
     "99": {
         "desc": "POWER CAP 90-100 Kvar MG\/ABB 1-12 STEP+CHOCK",
-        "price": 500
+        "price": 3927.00
     },
     "100": {
         "desc": "ติดตั้ง SURGE PROTECTION",
-        "price": 500
+        "price": 105.60
     },
     "101": {
         "desc": "เดินสายไฟ SURGE PROTECTION",
-        "price": 500
+        "price": 116.16
     },
     "102": {
         "desc": "ทำและติดตั้ง BUSBAR NEUTRAL 100-250A ยาว 1 เมตร",
-        "price": 500
+        "price": 34.85
     },
     "103": {
         "desc": "ทำและติดตั้ง BUSBAR GROUND 100-250A ยาว 1 เมตร",
-        "price": 500
+        "price": 34.85
     },
     "104": {
         "desc": "ทำและติดตั้ง BUSBAR NEUTRAL 400-630A ยาว 1 เมตร",
-        "price": 500
+        "price": 34.85
     },
     "105": {
         "desc": "ทำและติดตั้ง BUSBAR GROUND 400-630A ยาว 1 เมตร",
-        "price": 500
+        "price": 34.85
     },
     "106": {
         "desc": "ทำและติดตั้ง BUSBAR NEUTRAL 800-1000A ยาว 1 เมตร",
-        "price": 500
+        "price": 58.08
     },
     "107": {
         "desc": "ทำและติดตั้ง BUSBAR GROUND 800-1000A ยาว 1 เมตร",
-        "price": 500
+        "price": 58.08
     },
     "108": {
         "desc": "ทำและติดตั้ง BUSBAR NEUTRAL 1250-1600A ยาว 1 เมตร",
-        "price": 500
+        "price": 81.11
     },
     "109": {
         "desc": "ทำและติดตั้ง BUSBAR GROUND 1250-1600A ยาว 1 เมตร",
-        "price": 500
+        "price": 81.11
     },
     "110": {
         "desc": "ทำและติดตั้ง BUSBAR NEUTRAL 2000-2500A ยาว 1 เมตร",
-        "price": 500
+        "price": 175.73
     },
     "111": {
         "desc": "ทำและติดตั้ง BUSBAR GROUND 2000-2500A ยาว 1 เมตร",
-        "price": 500
+        "price": 175.73
     },
     "112": {
         "desc": "ทำและติดตั้ง BUSBAR NEUTRAL 3000-4000A ยาว 1 เมตร",
-        "price": 500
+        "price": 274.56
     },
     "113": {
         "desc": "ทำและติดตั้ง BUSBAR GROUND 3000-4000A ยาว 1 เมตร",
-        "price": 500
+        "price": 295.68
     },
     "114": {
         "desc": "ทำและติดตั้ง BUSBAR NEUTRAL 5000A ยาว 1 เมตร",
-        "price": 500
+        "price": 295.68
     },
     "115": {
         "desc": "ทำและติดตั้ง BUSBAR GROUND 5000A ยาว 1 เมตร",
-        "price": 500
+        "price": 295.68
     },
     "116": {
         "desc": "ทำและติดตั้ง BUSBAR CT GROUND FAULT",
-        "price": 500
+        "price": 34.85
     },
     "117": {
         "desc": "ติดตั้งคานรับ SUPPORT 1 คาน",
-        "price": 500
+        "price": 16.90
     },
     "118": {
         "desc": "ALUMINUM SUPPORT (ราคาคิดเป็นคู่)",
-        "price": 500
+        "price": 26.40
     },
     "119": {
         "desc": "ติดคานลูกถ้วย 1\/2 ชุด",
-        "price": 500
+        "price": 16.90
     },
     "120": {
         "desc": "ติดคานลูกถ้วย 3\/5 ชุด",
-        "price": 500
+        "price": 34.85
     },
     "121": {
         "desc": "ติด MIMIC 2 ชุด",
-        "price": 500
+        "price": 16.90
     },
     "122": {
         "desc": "ติดพลาสติก 5 ชุด",
-        "price": 500
+        "price": 26.40
     },
     "123": {
         "desc": "ติด NAME PLATE",
-        "price": 500
+        "price": 3.30
     },
     "124": {
         "desc": "ทำความสะอาดตู้",
-        "price": 500
+        "price": 16.90
     },
     "125": {
         "desc": "ติดตั้ง ROUTARY 1 ตัว",
-        "price": 500
+        "price": 26.40
     },
     "126": {
         "desc": "ติดตั้ง MTS 0-250A",
-        "price": 500
+        "price": 49.50
     },
     "127": {
         "desc": "ติดตั้ง MTS 400A",
-        "price": 500
+        "price": 49.50
     },
     "128": {
         "desc": "ติดตั้ง MTS 600A",
-        "price": 500
+        "price": 49.50
     },
     "129": {
         "desc": "ติดตั้ง MTS 800A",
-        "price": 500
+        "price": 66.00
     },
     "130": {
         "desc": "ติดตั้ง MTS 1000-1250A",
-        "price": 500
+        "price": 132.00
     },
     "131": {
         "desc": "ติดตั้ง ATS 0-250A",
-        "price": 500
+        "price": 49.50
     },
     "132": {
         "desc": "ติดตั้ง ATS 400-1250A",
-        "price": 500
+        "price": 99.00
     },
     "133": {
         "desc": "เดินบัสบาร์ ACB 3000-3200A,4POLES(8เส้นเบิ้ล3)",
-        "price": 500
+        "price": 1380.06
     },
     "134": {
         "desc": "เดินบัสบาร์ ACB 4000A,4POLES(8เส้นเบิ้ล3)",
-        "price": 500
+        "price": 1578.72
+    },
+     "135": {
+        "desc": "เดินบัสบาร์ ACB 5000A,4POLES(8เส้นเบิ้ล4)",
+        "price": 2112.00
     },
     "136": {
         "desc": "เดินบัสบาร์ ACB 6000-6300A (6เส้นเบิ้ล5)",
-        "price": 500
+        "price": 2217.60
     },
     "137": {
         "desc": "ติดตั้ง ACB 5000-6300A FIX\/DRAWOUT",
-        "price": 500
+        "price": 650.50
     },
     "138": {
         "desc": "BUSBAR 6300A \/1เมตร 3เฟส+SUPPORT",
-        "price": 500
+        "price": 1425.00
     },
     "139": {
         "desc": "ประกอบ BARLUG<NS...250 (BLOKSET)",
-        "price": 500
+        "price": 66.00
     },
     "140": {
         "desc": "ประกอบ BARLUG NS...400-600A (BLOKSET)",
-        "price": 500
+        "price": 114.05
     },
     "141": {
         "desc": "ประกอบ BAR LUG NS...800-1000A (BLOKSET)",
-        "price": 500
+        "price": 185.86
     },
     "142": {
         "desc": "ประกอบ BAR LUG NS...1200-1600A (BLOKSET)",
-        "price": 500
+        "price": 271.03
     },
     "143": {
         "desc": "ประกอบ BAR LUG NW...800-1000A (BLOKSET)",
-        "price": 500
+        "price": 185.86
     },
     "144": {
         "desc": "ประกอบ BAR LUG NW...1200-1600A (BLOKSET)",
-        "price": 500
+        "price": 271.03
     },
     "145": {
         "desc": "ประกอบ BAR LUG NW...2000A (BLOKSET)",
-        "price": 500
+        "price": 330.00
     },
     "146": {
         "desc": "ประกอบ BAR LUG NW...2500A (BLOKSET)",
-        "price": 500
+        "price": 439.99
     },
     "147": {
         "desc": "ประกอบ BAR LUG NW...3000-3200A (BLOKSET)",
-        "price": 500
+        "price": 579.68
     },
     "148": {
         "desc": "ประกอบ BAR LUG NW...4000A (BLOKSET)",
-        "price": 500
+        "price": 975.68
     },
     "149": {
         "desc": "ประกอบ BAR LUG NW...5000A (BLOKSET)",
-        "price": 500
+        "price": 1099.99
     },
     "150": {
         "desc": "MAIN BUSBAR แนวตั้ง\/เส้น (BLOKSET)",
-        "price": 500
+        "price": 109.99
     },
     "151": {
         "desc": "ตัดเจาะMAIN BUSBAR แนวตั้ง\/เส้น (BLOKSET)",
-        "price": 500
+        "price": 66.00
     },
     "152": {
         "desc": "ประกอบMAIN BUSBAR แนวตั้ง\/เส้น (BLOKSET)",
-        "price": 500
+        "price": 43.99
     },
     "153": {
         "desc": "MAIN BUSBAR แนวนอน\/ช่อง\/เส้น (BLOKSET)",
-        "price": 500
+        "price": 55.01
     },
     "154": {
         "desc": "ตัดเจาะMAIN BUSBAR แนวนอน\/ช่อง\/เส้น (BLOKSET)",
-        "price": 500
+        "price": 27.46
     },
     "155": {
         "desc": "ประกอบMAIN BUSBAR แนวนอน\/ช่อง\/เส้น (BLOKSET)",
-        "price": 500
+        "price": 27.46
     },
     "156": {
         "desc": "ติดตั้งชุด DRAWER",
-        "price": 500
+        "price": 55.01
     },
     "157": {
         "desc": "BAR เบิ้ล CAP(6เส้น=1ชุด)",
-        "price": 500
+        "price": 16.90
     },
     "158": {
         "desc": "ติดตั้ง TERMINAL ช่อง CAP(3เฟส=1จุด)",
-        "price": 500
+        "price": 16.90
     },
     "159": {
         "desc": "ติดสาย G\/1ช่อง",
-        "price": 500
+        "price": 3.30
     },
     "160": {
         "desc": "ตั้งขา CB 1ตัว",
-        "price": 500
+        "price": 16.90
     },
     "161": {
         "desc": "ตั้งขาเสริม CT",
-        "price": 500
+        "price": 16.90
     }
 };

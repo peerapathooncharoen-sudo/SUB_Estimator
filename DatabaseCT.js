@@ -2,370 +2,370 @@
 var controlDatabase = {
     "1": {
         "desc": "วายริ่งชุด LAMP+FUSE(3เฟส)",
-        "price": 500
+        "price": 69.30
     },
     "2": {
         "desc": "วายริ่งชุด AMP+CT+SELECTOR",
-        "price": 500
+        "price": 71.28
     },
     "3": {
         "desc": "วายริ่งชุด LAMP+FUSE+AMP+CT+VOLT+SELECTOR",
-        "price": 500
+        "price": 198.00
     },
     "4": {
         "desc": "วายริ่งชุด Hz,PF,Hr มิเตอร์",
-        "price": 500
+        "price": 57.02
     },
     "5": {
         "desc": "วายริ่งชุด Kw,Kwh มิเตอร์",
-        "price": 500
+        "price": 96.36
     },
     "6": {
         "desc": "วายริ่งชุด LAMP+FUSE+DIGITALMETER+CT",
-        "price": 500
+        "price": 160.38
     },
     "7": {
         "desc": "ติดตั้งอุปกรณ์ชุด CONTROL CAP(ใช้เพลท STOCK)",
-        "price": 500
+        "price": 52.80
     },
     "8": {
         "desc": "วายริ่งชุด CONTROL CAP(PFC) 6 STEP",
-        "price": 500
+        "price": 274.56
     },
     "9": {
         "desc": "วางยริ่งชุด CONTROL CAP (PFC) 8 STEP",
-        "price": 500
+        "price": 343.20
     },
     "10": {
         "desc": "วายริ่งชุด CONTROL CAP (PFC) 10 STEP",
-        "price": 500
+        "price": 411.84
     },
     "11": {
         "desc": "วายริ่งชุด CONTROL CAP (PFC) 12 STEP",
-        "price": 500
+        "price": 480.48
     },
     "12": {
         "desc": "วายริ่งชุด CONTROL CAP 6 STEP AUTO ไม่มี PUSH BUTTON",
-        "price": 500
+        "price": 205.92
     },
     "13": {
         "desc": "วายริ่งชุด CONTROL CAP 12 STEP AUTO ไม่มี PUSH BUTTON",
-        "price": 500
+        "price": 343.20
     },
     "14": {
         "desc": "ติดตั้งอุปกรณ์ชุด CONTROL CAP ไม่ใช้เพลท STOCK",
-        "price": 500
+        "price": 105.60
     },
     "15": {
         "desc": "วายริ่งชุด CONTROL CAP (PFC) 6 STEP",
-        "price": 500
+        "price": 473.62
     },
     "16": {
         "desc": "วายริ่งชุด CONTROL CAP (PFC) 8 STEP",
-        "price": 500
+        "price": 552.55
     },
     "17": {
         "desc": "วายริ่งชุด CONTROL CAP (PFC) 10 STEP",
-        "price": 500
+        "price": 631.49
     },
     "18": {
         "desc": "วายริ่งชุด CONTROL CAP (PFC) 12 STEP",
-        "price": 500
+        "price": 710.42
     },
     "19": {
         "desc": "วายริ่งชุด CONTROL CAP 6 STEP AUTO ไม่มี PUSH BUTTON",
-        "price": 500
+        "price": 343.20
     },
     "20": {
         "desc": "วายริ่งชุด CONTROL CAP 12 STEP AUTO ไม่มี PUSH BUTTON",
-        "price": 500
+        "price": 480.48
     },
     "21": {
         "desc": "ติดตั้งและวายริ่งพัดลม 1 ตัว + THERMOSTAT",
-        "price": 500
+        "price": 19.50
     },
     "22": {
         "desc": "ติดตั้งและวายริ่งพัดลม 2 ตัว + THERMOSTAT",
-        "price": 500
+        "price": 59.40
     },
     "23": {
         "desc": "ติดตั้งและวายริ่งชุด CONTROL ATS'ONEC'(MCCB)",
-        "price": 500
+        "price": 396.00
     },
     "24": {
         "desc": "ติดตั้งและวายริ่งชุด CONTROL ATS'ONEC'(ACB)",
-        "price": 500
+        "price": 495.00
     },
     "25": {
         "desc": "ติดตั้งและวายริ่งชุด CONTROL ATS'UA'(MCCB)",
-        "price": 500
+        "price": 429.00
     },
     "26": {
         "desc": "ติดตั้งและวายริ่งชุด CONTROL ATS'UA'(ACB)",
-        "price": 500
+        "price": 528.00
     },
     "27": {
         "desc": "วายริ่งชุด ACCESSORIES(UV,ST,CC,MOTOR)",
-        "price": 500
+        "price": 72.90
     },
     "28": {
         "desc": "วายริ่งชุด FUNCTION CB MAIN(OV+UV+TR TEMP+ALARM)",
-        "price": 500
+        "price": 792.00
     },
     "29": {
         "desc": "วายริ่งชุด GROUND FAULT(MG)",
-        "price": 500
+        "price": 40.26
     },
     "30": {
         "desc": "ติดตั้งและวายริ่งชุด INTER LOCK 2 MAIN TIE(ACB)",
-        "price": 500
+        "price": 594.00
     },
     "31": {
         "desc": "วายริ่งชุด MTS(MECHANICAL INTERLOCK)",
-        "price": 500
+        "price": 205.92
     },
     "32": {
         "desc": "ติดตั้งอุปกรณ์ชุด STARTER DOL 0-40HP",
-        "price": 500
+        "price": 52.80
     },
     "33": {
         "desc": "ติดตั้งอุปกรณ์ชุด STARTER DOL 50-100HP",
-        "price": 500
+        "price": 52.80
     },
     "34": {
         "desc": "ติดตั้งอุปกรณ์ชุด STARTER DOL 125-220HP",
-        "price": 500
+        "price": 105.60
     },
     "35": {
         "desc": "เดินสาย POWER ชุด STARTER DOL 0-40HP",
-        "price": 500
+        "price": 137.28
     },
     "36": {
         "desc": "เดินสาย POWER ชุด STARTER DOL 50-100HP",
-        "price": 500
+        "price": 274.56
     },
     "37": {
         "desc": "เดินสาย POWER ชุด STARTER DOL 125-220HP",
-        "price": 500
+        "price": 591.36
     },
     "38": {
         "desc": "วายริ่งชุด CONTROL STARTER DOL",
-        "price": 500
+        "price": 137.28
     },
     "39": {
         "desc": "ติดตั้งอุปกรณ์ชุด STARTER STAR-DELTA 0-40HP",
-        "price": 500
+        "price": 82.50
     },
     "40": {
         "desc": "ติดตั้งอุปกรณ์ชุด STARTER STAR-DELTA 50-100HP",
-        "price": 500
+        "price": 82.50
     },
     "41": {
         "desc": "ติดตั้งอุปกรณ์ชุด STARTER STAR-DELTA 125-220HP",
-        "price": 500
+        "price": 211.20
     },
     "42": {
         "desc": "เดินสาย POWER STARTER STAR-DELTA ชุด 0-20HP",
-        "price": 500
+        "price": 198.00
     },
     "43": {
         "desc": "เดินสาย POWER STARTER STAR-DELTA ชุด 20-40HP",
-        "price": 500
+        "price": 214.50
     },
     "44": {
         "desc": "เดินสาย POWER STARTER STAR-DELTA ชุด 50-100HP",
-        "price": 500
+        "price": 363.00
     },
     "45": {
         "desc": "เดินสาย POWER STARTER STAR-DELTA ชุด 125-220HP",
-        "price": 500
+        "price": 1254.00
     },
     "46": {
         "desc": "วายริ่งชุด CONTROL STARTER STAR-DELTA",
-        "price": 500
+        "price": 205.92
     },
     "47": {
         "desc": "วายริ่ง CONTROL RELAY 1 ชุด",
-        "price": 500
+        "price": 43.88
     },
     "48": {
         "desc": "วายริ่งชุด HI LEVEL+LOW LEVEL+BUZZER",
-        "price": 500
+        "price": 52.80
     },
     "49": {
         "desc": "ติดตั้งและวายริ่ง FLOATLESS LEVEL SWITCH 1 บ่อ",
-        "price": 500
+        "price": 68.64
     },
     "50": {
         "desc": "ติดตั้งและวายริ่ง FLOATLESS LEVEL SWITCH 2 บ่อ",
-        "price": 500
+        "price": 137.28
     },
     "51": {
         "desc": "ติดตั้งและวายริ่ง TRANSFORMER (แบบตัวเล็กใช้กับชุด PUMP)",
-        "price": 500
+        "price": 21.26
     },
     "52": {
         "desc": "ติดตั้งสาย G ของ CAP",
-        "price": 500
+        "price": 16.90
     },
     "53": {
         "desc": "ตั้งขา CB 1 ตัว",
-        "price": 500
+        "price": 17.74
     },
     "54": {
         "desc": "LIMIT SWITCH",
-        "price": 500
+        "price": 16.90
     },
     "55": {
         "desc": "FLUORESCENT",
-        "price": 500
+        "price": 39.60
     },
     "56": {
         "desc": "STARTER WITH REMOTE (ราคาคิดเป็นชุด)",
-        "price": 500
+        "price": 26.40
     },
     "57": {
         "desc": "ประกอบ CAP(MG)(ประกอบ CAP)",
-        "price": 500
+        "price": 16.50
     },
     "58": {
         "desc": "ประกอบ MOTOR DRIVE(ของ MCCB&ACB)",
-        "price": 500
+        "price": 33.00
     },
     "59": {
         "desc": "ติดตั้ง UV-ST-CC",
-        "price": 500
+        "price": 16.50
     },
     "60": {
         "desc": "ติดตั้ง KEY SWITCH",
-        "price": 500
+        "price": 16.50
     },
     "61": {
         "desc": "WIRING SQUARE LAMP 0-6 EA",
-        "price": 500
+        "price": 264.00
     },
     "62": {
         "desc": "WIRING SQUARE LAMP 7-12 EA",
-        "price": 500
+        "price": 363.00
     },
     "63": {
         "desc": "WIRING CTT8+PLUG(BLOKSET)",
-        "price": 500
+        "price": 633.60
     },
     "64": {
         "desc": "WIRING CONTROL VSD",
-        "price": 500
+        "price": 167.24
     },
     "65": {
         "desc": "เดินสาย POWER VSD\/ 1 ชุด(CB-VSD-LOAD) 0-50HP",
-        "price": 500
+        "price": 237.60
     },
     "66": {
         "desc": "เดินสาย POWER VSD\/ 1 ชุด(CB-VSD-LOAD) 51-100HP",
-        "price": 500
+        "price": 356.40
     },
     "67": {
         "desc": "ติดตั้ง VSD\/ 1 ชุด",
-        "price": 500
+        "price": 63.36
     },
     "68": {
         "desc": "WIRING SEPAM BLOKSET\/ ชุด(BLOKSET)",
-        "price": 500
+        "price": 1597.20
     },
     "69": {
         "desc": "WIRING PLUG TERMINAL\/ จุด(BLOKSET)",
-        "price": 500
+        "price": 79.20
     },
     "70": {
         "desc": "WIRING PLC ต่อ 1 SLOT",
-        "price": 500
+        "price": 158.40
     },
     "71": {
         "desc": "WIRING SMART RELAY 1 ตัว",
-        "price": 500
+        "price": 59.40
     },
     "72": {
         "desc": "ติดตั้งและเดินเต้ารับ",
-        "price": 500
+        "price": 33.00
     },
     "73": {
         "desc": "ใส่คานเลดเดอร์(ต่อ 1 ชิ้น)",
-        "price": 500
+        "price": 3.30
     },
     "74": {
         "desc": "ติดตั้งฝาหลัง,ฝาข้าง+กุญแจต่างๆ+สติ๊กเกอร์ต่อ 1 ฝา(ยึดน็อต)",
-        "price": 500
+        "price": 24.75
     },
     "75": {
         "desc": "ติดตั้งฝาหลัง,ฝาข้าง+กุญแจต่างๆ+สติ๊กเกอร์ต่อ 1 ฝา(หัวเรือญี่ปุ่น)",
-        "price": 500
+        "price": 34.32
     },
     "76": {
         "desc": "ติดตั้งฝาหลัง,ฝาข้าง+กุญแจต่างๆ+สติ๊กเกอร์ต่อ 1 ฝา(เขาควาย)",
-        "price": 500
+        "price": 57.75
     },
     "77": {
         "desc": "แยกฐานตู้(โครงตู้+ฐานไม่รวมบัสบาร์)",
-        "price": 500
+        "price": 82.50
     },
     "78": {
         "desc": "ห่อตู้(ต่อ 1 ช่วง)",
-        "price": 500
+        "price": 16.90
     },
     "79": {
         "desc": "ติดตั้งกระจก",
-        "price": 500
+        "price": 9.41
     },
     "80": {
         "desc": "ใส่หลังคาพัดลม",
-        "price": 500
+        "price": 21.62
     },
     "81": {
         "desc": "แยก BUSBAR 0-250A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 8.45
     },
     "82": {
         "desc": "แยก BUSBAR 400A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 8.45
     },
     "83": {
         "desc": "แยก BUSBAR 630A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 8.45
     },
     "84": {
         "desc": "แยก BUSBAR 800A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 9.14
     },
     "85": {
         "desc": "แยก BUSBAR 1000A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 9.14
     },
     "86": {
         "desc": "แยก BUSBAR 1200A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 18.32
     },
     "87": {
         "desc": "แยก BUSBAR 1600A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 19.70
     },
     "88": {
         "desc": "แยก BUSBAR 2000A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 19.70
     },
     "89": {
         "desc": "แยก BUSBAR 2500A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 19.70
     },
     "90": {
         "desc": "แยก BUSBAR 3200A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 19.70
     },
     "91": {
         "desc": "แยก BUSBAR 4000A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 21.12
     },
     "92": {
         "desc": "แยก BUSBAR 5000A\/ 1 จุด 3 เฟส+SUPPORT",
-        "price": 500
+        "price": 47.52
     }
 };
