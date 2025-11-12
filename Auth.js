@@ -3,6 +3,9 @@ const USER_DB_KEY = 'sub_app_users_v1';
 
 const PASSCODE = '123188'; // เปลี่ยนรหัสผ่านระบบได้ที่นี่
 
+// [ADD] บังคับตรวจ passcode ทุกครั้ง (ตั้ง false หากไม่ต้องการ)
+const REQUIRE_PASSCODE_ALWAYS = true;
+
 // hash password (SHA-256 -> hex)
 async function hashPassword(password) {
   const enc = new TextEncoder();
@@ -37,8 +40,20 @@ function getSession() {
 function clearSession() {
   try { sessionStorage.removeItem(AUTH_KEY); } catch (e) {}
 }
+
+// [ADD] helper ตรวจว่า session ปัจจุบันเป็นของ passcode
+function isPasscodeSession() {
+  const s = getSession();
+  return !!(s && s.username === 'passcode');
+}
+
+// [MODIFY] ensureAuth: บังคับรีไดเร็กหากไม่มี session passcode
 function ensureAuth(redirectTo = 'login.html') {
   const s = getSession();
+  if (REQUIRE_PASSCODE_ALWAYS && !isPasscodeSession()) {
+    if (!location.href.includes(redirectTo)) location.href = redirectTo;
+    return false;
+  }
   if (!s || !s.username) {
     if (!location.href.includes(redirectTo)) location.href = redirectTo;
     return false;
@@ -56,4 +71,5 @@ window.setSession = setSession;
 window.getSession = getSession;
 window.clearSession = clearSession;
 window.ensureAuth = ensureAuth;
+window.isPasscodeSession = isPasscodeSession;
 

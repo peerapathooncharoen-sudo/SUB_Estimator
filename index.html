@@ -385,51 +385,22 @@
 <script>
   // ensure DOM ready then init auth UI and listener
   document.addEventListener('DOMContentLoaded', function () {
-    // redirect to login if not authenticated
-      // If Auth is present, check for existing users. If none, show onboarding UI.
-      if (window.getUsers && window.getUsers().length === 0) {
-        // show onboarding modal
-        const modal = document.getElementById('onboard-modal');
-        if (modal) modal.style.display = 'flex';
-        const btnCreate = document.getElementById('onboard-create');
-        const userIn = document.getElementById('onboard-username');
-        const passIn = document.getElementById('onboard-password');
-        const msg = document.getElementById('onboard-msg');
-        if (btnCreate) btnCreate.addEventListener('click', async () => {
-          const u = userIn.value && userIn.value.trim();
-          const p = passIn.value && passIn.value.trim();
-          msg.textContent = '';
-          if (!u || !p) { msg.textContent = 'Username and password required'; return; }
-          try {
-            const res = await registerUser(u, p);
-            if (!res || !res.success) { msg.textContent = res && res.error ? res.error : 'Failed to create user'; return; }
-            setSession && setSession(u);
-            modal.style.display = 'none';
-            // reload to initialize UI with session
-            location.reload();
-          } catch (e) {
-            msg.textContent = 'Error creating user';
-            console.error(e);
-          }
-        });
-        return; // stop further init until user created
-      }
-    
-      // If session exists, show welcome and logout button as before
-      if (!window.ensureAuth || !window.ensureAuth()) return;
-    
-      const s = window.getSession && window.getSession();
-      const welcome = document.getElementById('auth-welcome');
-      if (welcome && s && s.username) welcome.textContent = 'ผู้ใช้: ' + s.username;
-    
-      const btn = document.getElementById('btn-logout');
-      if (btn) {
-        btn.addEventListener('click', function () {
-          // remove session and go to login
-          window.clearSession && window.clearSession();
-          setTimeout(() => location.href = 'login.html', 50);
-        });
-      }
+    // [REMOVE] บล็อก onboarding เดิม (ระบบ passcode ไม่มีหลายผู้ใช้)
+
+    // [KEEP] ตรวจสิทธิ์: ถ้าไม่มี session passcode จะถูกรีไดเร็ก
+    if (!window.ensureAuth || !window.ensureAuth()) return;
+
+    const s = window.getSession && window.getSession();
+    const welcome = document.getElementById('auth-welcome');
+    if (welcome && s && s.username) welcome.textContent = 'ผู้ใช้: ' + s.username;
+
+    const btn = document.getElementById('btn-logout');
+    if (btn) {
+      btn.addEventListener('click', function () {
+        window.clearSession && window.clearSession();
+        setTimeout(() => location.href = 'login.html', 50);
+      });
+    }
   });
 </script>
 
