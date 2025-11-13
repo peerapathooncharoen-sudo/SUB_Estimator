@@ -831,201 +831,162 @@
       }
     };
     
-    // REPLACE saveAsPDF implementation with a clean, syntactically-correct exporter
+    // REPLACE saveAsPDF implementation with high-clarity A4 landscape export (PNG + 300DPI-like scaling)
     window.saveAsPDF = async function saveAsPDF() {
-	try {
-		const entry = collectCurrentEntry();
-		if (!entry) return;
-		if (typeof window.renderSavedPreview === 'function') window.renderSavedPreview(entry);
+      try {
+        const entry = collectCurrentEntry();
+        if (!entry) return;
+        if (typeof window.renderSavedPreview === 'function') window.renderSavedPreview(entry);
 
-		const savedOutput = document.getElementById('saved-output');
-		const pdfPage = savedOutput ? savedOutput.querySelector('.pdf-page') : null;
-		if (!pdfPage) {
-			alert('ไม่พบเนื้อหาสำหรับสร้าง PDF');
-			return;
-		}
-		if (typeof html2canvas !== 'function') {
-			alert('html2canvas not loaded. กรุณารีเฟรชหน้าแล้วลองใหม่');
-			return;
-		}
+        const savedOutput = document.getElementById('saved-output');
+        const pdfPage = savedOutput ? savedOutput.querySelector('.pdf-page') : null;
+        if (!pdfPage) {
+          alert('ไม่พบเนื้อหาสำหรับสร้าง PDF');
+          return;
+        }
+        if (typeof html2canvas !== 'function') {
+          alert('html2canvas not loaded. กรุณารีเฟรชหน้าแล้วลองใหม่');
+          return;
+        }
 
-		const filenameBase = (entry.ค่าแรงSUB || 'SUB-Estimate').replace(/[\\/:*?"<>|]+/g, '_');
-		const filename = `${filenameBase}-${entry.wa || 'output'}.pdf`;
+        const filenameBase = (entry.ค่าแรงSUB || 'SUB-Estimate').replace(/[\\/:*?"<>|]+/g, '_');
+        const filename = `${filenameBase}-${entry.wa || 'output'}.pdf`;
 
-		// existing preview styles
-		const previewStyles = Array.from(savedOutput.querySelectorAll('style'));
-		let injectedStyle = null;
-		if (previewStyles.length) {
-			injectedStyle = document.createElement('style');
-			injectedStyle.id = 'pdf-export-style';
-			injectedStyle.textContent = previewStyles.map(s => s.textContent || '').join('\n');
-			document.head.appendChild(injectedStyle);
-		}
+        // offscreen wrapper (พิง DOM เดิม แต่ซ่อนไว้นอกจอ)
+        const exportWrapper = document.createElement('div');
+        exportWrapper.id = 'pdf-export-wrapper';
+        exportWrapper.style.position = 'fixed';
+        exportWrapper.style.left = '-9999px';
+        exportWrapper.style.top = '0';
+        exportWrapper.style.zIndex = '2147483647';
+        exportWrapper.style.background = '#fff';
+        exportWrapper.style.boxSizing = 'border-box';
+        exportWrapper.style.pointerEvents = 'none';
+        exportWrapper.style.padding = '0';
+        exportWrapper.style.margin = '0';
+        exportWrapper.style.visibility = 'visible';
 
-		// offscreen wrapper
-		const exportWrapper = document.createElement('div');
-		exportWrapper.id = 'pdf-export-wrapper';
-		exportWrapper.style.position = 'fixed';
-		exportWrapper.style.left = '-9999px';
-		exportWrapper.style.top = '0';
-		exportWrapper.style.zIndex = '2147483647';
-		exportWrapper.style.background = '#fff';
-		exportWrapper.style.boxSizing = 'border-box';
-		exportWrapper.style.pointerEvents = 'none';
-		exportWrapper.style.padding = '0';
-		exportWrapper.style.margin = '0';
-		exportWrapper.style.visibility = 'visible';
+        // A4 landscape in mm
+        const pageWidthMm = 297;
+        const pageHeightMm = 210;
 
-		// A4 landscape base size (mm)
-		const pageWidthMm = 297;
-		const pageHeightMm = 210;
+        // [CHANGE] ปรับขอบการแคปให้ซ้าย=ขวา
+        const extraLeftMm = 10;   // เดิม 3 -> เพิ่มให้เท่ากับขวา
+        const extraRightMm = 10;  // คงเดิม
 
-		// --- NEW: extra capture area in mm (ปรับค่าได้) ---
-		// ตัวอย่าง: ขยายซ้าย/ขวา 10mm เพื่อให้จับพื้นที่เกินขอบ A4
-		const extra = { left: 10, right: 10, top: 0, bottom: 0 }; // <-- เปลี่ยนค่าตามต้องการ
-		// capture area (mm)
-		const captureWidthMm = pageWidthMm + (extra.left || 0) + (extra.right || 0);
-		const captureHeightMm = pageHeightMm + (extra.top || 0) + (extra.bottom || 0);
-		const mmToPx = 96 / 25.4;
-		const captureWidthPx = Math.round(captureWidthMm * mmToPx);
-
-		// clone the pdf page
-		const exportNode = pdfPage.cloneNode(true);
-		try {
-			exportNode.style.setProperty('box-sizing', 'border-box', 'important');
-			// keep original content width as pageWidthMm, but we will place it inside a larger capture wrapper
-			exportNode.style.setProperty('width', pageWidthMm + 'mm', 'important');
-			exportNode.style.setProperty('padding', '0mm', 'important');
-			exportNode.style.setProperty('margin', '0', 'important');
-			exportNode.style.setProperty('background', '#fff', 'important');
-			exportNode.style.setProperty('display', 'block', 'important');
-			// move content inward by extra.left so capture includes left bleed
-			exportNode.style.setProperty('margin-left', (extra.left || 0) + 'mm', 'important');
-		} catch (e) {
-			// ignore
-		}
-
-		// create capture wrapper sized to captureWidthMm and put exportNode inside
-		const captureWrapper = document.createElement('div');
-		captureWrapper.id = 'pdf-capture-wrapper';
-		captureWrapper.style.boxSizing = 'border-box';
-		captureWrapper.style.width = captureWidthMm + 'mm';
-		captureWrapper.style.height = 'auto';
-		captureWrapper.style.background = '#fff';
-		captureWrapper.style.display = 'block';
-		captureWrapper.style.padding = '0';
-		captureWrapper.style.margin = '0'; 
-		// append exportNode inside captureWrapper
-		captureWrapper.appendChild(exportNode);
-		exportWrapper.appendChild(captureWrapper);
-		document.body.appendChild(exportWrapper);
-
-		// optional: inject export-only override (thin borders) inside the cloned node so preview CSS unaffected
-		let injectedOverride = null;
+        // clone the pdf page
+        const exportNode = pdfPage.cloneNode(true);
         try {
-            injectedOverride = document.createElement('style');
-            injectedOverride.id = 'pdf-export-override';
-            injectedOverride.textContent = `
-                /* compact export: smaller base font, tighter line-height and paddings */
-                .pdf-page { padding: 4mm 3mm !important; font-size: 11px !important; line-height: 1.05 !important; -webkit-font-smoothing: antialiased !important; text-rendering: optimizeLegibility !important; }
-                .pdf-page h2 { font-size: 16px !important; margin:2px 0 5px !important; }
-                .pdf-page h3 { font-size: 12px !important; margin:4px 0 3px !important; }
-                .pdf-items th, .pdf-items td {
-                  border: 0.08mm solid #444 !important; /* <- reduce thickness for exported PDF */
-                }
-                .pdf-page .sig-table td {
-                  border: 0.08mm solid #444 !important; /* <- keep signature boxes consistent */
-                }
-                .pdf-page.pdf-nowrap th, .pdf-page.pdf-nowrap td {
-                  border: 0.08mm solid #444 !important; /* <- override nowrap-case as well */
-                }
-                table { border-collapse: collapse !important; }
-                /* ensure high contrast */
-                .pdf-page, .pdf-page * { color: #111 !important; }
-            `;
-            captureWrapper.insertBefore(injectedOverride, captureWrapper.firstChild);
+          exportNode.style.setProperty('box-sizing', 'border-box', 'important');
+          exportNode.style.setProperty('width', pageWidthMm + 'mm', 'important');
+          exportNode.style.setProperty('padding', '0mm', 'important');
+          exportNode.style.setProperty('margin', '0', 'important');
+          exportNode.style.setProperty('background', '#fff', 'important');
+          exportNode.style.setProperty('display', 'block', 'important');
+          // [ADD] ขยับเนื้อหาไปขวาเพื่อเปิดพื้นที่แคปด้านซ้าย
+          exportNode.style.setProperty('margin-left', extraLeftMm + 'mm', 'important'); // เว้นซ้ายตาม extraLeft
+        } catch (e) {}
+
+        // capture wrapper sized with extra left/right capture width
+        const captureWrapper = document.createElement('div');
+        captureWrapper.id = 'pdf-capture-wrapper';
+        captureWrapper.style.boxSizing = 'border-box';
+        // [CHANGE] เพิ่มทั้งซ้ายและขวา
+        captureWrapper.style.width = (pageWidthMm + extraLeftMm + extraRightMm) + 'mm';
+        captureWrapper.style.height = 'auto';
+        captureWrapper.style.background = '#fff';
+        captureWrapper.style.display = 'block';
+        captureWrapper.style.padding = '0';
+        captureWrapper.style.margin = '0';
+        captureWrapper.appendChild(exportNode);
+        exportWrapper.appendChild(captureWrapper);
+        document.body.appendChild(exportWrapper);
+
+        // [MODIFY] export-only override: ตัด padding ทุกด้านให้เป็น 0mm
+        let injectedOverride = null;
+        try {
+          injectedOverride = document.createElement('style');
+          injectedOverride.id = 'pdf-export-override';
+          injectedOverride.textContent = `
+            .pdf-page { padding: 0mm !important; font-size: 11px !important; line-height: 1.05 !important; -webkit-font-smoothing: antialiased !important; text-rendering: optimizeLegibility !important; }
+            .pdf-items th, .pdf-items td, .pdf-page .sig-table td { border: 0.08mm solid #444 !important; }
+            table { border-collapse: collapse !important; }
+            .pdf-page, .pdf-page * { color: #111 !important; }
+          `;
+          captureWrapper.insertBefore(injectedOverride, captureWrapper.firstChild);
         } catch (e) { injectedOverride = null; }
 
-// Force single-line mode on the cloned page and enforce per-cell styles as a fallback
-try {
-  exportNode.classList.add('pdf-nowrap');
-  exportNode.querySelectorAll('th, td').forEach(cell => {
-    try {
-      cell.style.setProperty('white-space', 'nowrap', 'important');
-      cell.style.setProperty('overflow', 'visible', 'important');
-      cell.style.setProperty('text-overflow', 'clip', 'important');
-    } catch (e) {}
-  });
-} catch (e) { /* ignore */ }
-
         const cleanup = () => {
-            try { if (exportWrapper.parentNode) exportWrapper.parentNode.removeChild(exportWrapper); } catch (e) {}
-            try { if (injectedStyle && injectedStyle.parentNode) injectedStyle.parentNode.removeChild(injectedStyle); } catch (e) {}
-            try { if (injectedOverride && injectedOverride.parentNode) injectedOverride.parentNode.removeChild(injectedOverride); } catch (e) {}
+          try { if (exportWrapper.parentNode) exportWrapper.parentNode.removeChild(exportWrapper); } catch (e) {}
+          try { if (injectedOverride && injectedOverride.parentNode) injectedOverride.parentNode.removeChild(injectedOverride); } catch (e) {}
         };
 
-		// allow styles to apply
-		await new Promise(r => setTimeout(r, 160));
+        // ให้ layout คำนวณขนาดก่อน เพื่อวัดความกว้างจริงเป็น px
+        await new Promise(r => setTimeout(r, 120));
+        const baseWpx = captureWrapper.getBoundingClientRect().width || captureWrapper.offsetWidth || 1122;
+        const targetWpx = 3508;
+        const scale = Math.min(5, Math.max(2, targetWpx / baseWpx));
 
-		// capture with sufficient scale
-		const deviceScale = window.devicePixelRatio || 1;
-		// higher scale for crisper text/lines; limit to avoid huge memory usage
-		const scale = Math.min(4, Math.max(3, Math.round(deviceScale * 2)));
-		const canvas = await html2canvas(captureWrapper, { scale, useCORS: true, allowTaint: false, backgroundColor: '#ffffff', logging: false });
-		// use PNG (lossless) to preserve line clarity
-		const imgData = canvas.toDataURL('image/png');
+        // สร้างภาพ raster ความคมชัดสูง
+        const canvas = await html2canvas(captureWrapper, {
+          scale,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: '#ffffff',
+          logging: false
+        });
 
-		// compute mm sizes from captured canvas (canvas.width corresponds to captureWidthMm)
-		const pxPerMmActual = canvas.width / captureWidthMm;
-		const captureWmmFromCanvas = canvas.width / pxPerMmActual; // ~ captureWidthMm
-		const captureHmmFromCanvas = canvas.height / pxPerMmActual;
+        // PNG lossless เพื่อรักษาความคม
+        const imgData = canvas.toDataURL('image/png');
 
-		// ensure jsPDF class available (UMD bundle exposes window.jspdf.jsPDF or window.jsPDF)
-		const jsPDFClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : (window.jsPDF || null);
-		if (!jsPDFClass) {
-			// fallback to html2pdf if available
-			if (window.html2pdf && typeof window.html2pdf === 'function') {
-				await window.html2pdf().from(captureWrapper).set({ filename }).save();
-				cleanup();
-				return;
-			}
-			throw new Error('jsPDF not available');
-		}
+        // เตรียม jsPDF A4 แนวนอน แล้ววางรูปโดยรักษาสัดส่วนและจัดกึ่งกลาง
+        const jsPDFClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : (window.jsPDF || null);
+        if (!jsPDFClass) {
+          if (window.html2pdf && typeof window.html2pdf === 'function') {
+            await window.html2pdf().from(captureWrapper).set({ filename }).save();
+            cleanup();
+            return;
+          }
+          throw new Error('jsPDF not available');
+        }
+        const pdf = new jsPDFClass({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+        const pdfW = pdf.internal.pageSize.getWidth();
+        const pdfH = pdf.internal.pageSize.getHeight();
 
-		// Create standard A4 landscape PDF and scale the captured image to fit A4
-		const pdf = new jsPDFClass({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-		const pdfW = pdf.internal.pageSize.getWidth();
-		const pdfH = pdf.internal.pageSize.getHeight();
+        // [MODIFY] ลดขอบบน/ล่างเหลือ 0.5mm (ซ้าย/ขวาคง 2mm) เพื่อให้ขอบขาวด้านบน-ล่างน้อยลง
+        const marginLeftMm = 2;
+        const marginRightMm = 2;
+        const marginTopMm = 0.5;
+        const marginBottomMm = 0.5;
 
-		// Use zero margins to allow maximum fill of A4; change if small white gutter desired
-		const marginLeft = 0;
-		const marginRight = 0;
-		const marginTopBottom = 0;
-		const usableW = pdfW - marginLeft - marginRight;
-		const usableH = pdfH - marginTopBottom * 2;
- 
-		// content size in mm (capture area)
-		const contentWmm = captureWidthMm;
-		const contentHmm = captureHeightMm;
+        const usableW = pdfW - (marginLeftMm + marginRightMm);
+        const usableH = pdfH - (marginTopMm + marginBottomMm);
 
-		// scale to fit A4 (preserve aspect ratio)
-		const fitScale = Math.min(usableW / contentWmm, usableH / contentHmm);
-		const drawW = contentWmm * fitScale;
-		const drawH = contentHmm * fitScale;
+        // คำนวณขนาดเนื้อหาจริงจาก canvas (หน่วย mm)
+        // pageWidthMm/extraLeftMm/extraRightMm ถูกประกาศก่อนหน้าแล้ว
+        const contentWmm = pageWidthMm + extraLeftMm + extraRightMm;
+        const pxPerMm = canvas.width / contentWmm;
+        const contentHmm = canvas.height / pxPerMm;
 
-		// center on page
-		const x = marginLeft + Math.max(0, (usableW - drawW) / 2);
-		const y = marginTopBottom + Math.max(0, (usableH - drawH) / 2);
+        // fit/contain: ย่อ/ขยายให้พอดีกับพื้นที่ใช้งาน โดยไม่ครอป
+        const fitScale = Math.min(usableW / contentWmm, usableH / contentHmm);
+        const drawW = contentWmm * fitScale;
+        const drawH = contentHmm * fitScale;
 
-		pdf.addImage(imgData, 'JPEG', x, y, drawW, drawH);
-		pdf.save(filename);
+        // จัดกึ่งกลางในหน้าด้วยมาร์จินขั้นต่ำ
+        const x = marginLeftMm + Math.max(0, (usableW - drawW) / 2);
+        const y = marginTopMm + Math.max(0, (usableH - drawH) / 2);
 
-		cleanup();
-	} catch (err) {
-		console.error('saveAsPDF failed', err);
-		alert('การสร้างไฟล์ PDF ล้มเหลว (ดูคอนโซลสำหรับรายละเอียด)');
-	}
-};
+        // วาดภาพลง PDF
+        pdf.addImage(imgData, 'PNG', x, y, drawW, drawH);
+        pdf.save(filename);
+
+        cleanup();
+      } catch (err) {
+        console.error('saveAsPDF failed', err);
+        alert('การสร้างไฟล์ PDF ล้มเหลว (ดูคอนโซลสำหรับรายละเอียด)');
+      }
+  };
 
   </script>
  </body>

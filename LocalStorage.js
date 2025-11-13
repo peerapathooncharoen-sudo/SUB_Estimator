@@ -210,6 +210,17 @@ function renderSavedPreview(saved) {
       </thead><tbody>${rows}</tbody></table>`;
     };
 
+  // [ADD] helpers + sums for Power/Control totals
+  const money = (n) => new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(n) || 0);
+  const toNum = (s) => parseFloat(String(s || '').replace(/,/g, '')) || 0;
+  const sumItems = (items) => (items || []).reduce((acc, r) => {
+    if (!r) return acc;
+    const t = r.total != null ? toNum(r.total) : (toNum(r.qty) * toNum(r.price));
+    return acc + (t || 0);
+  }, 0);
+  const powerSum = sumItems(saved.power);
+  const controlSum = sumItems(saved.control);
+
   const html = `
     <style>
       /* compact symmetric gutter: 4mm top/bottom, 3mm left/right */
@@ -282,7 +293,7 @@ function renderSavedPreview(saved) {
     <!-- inner wrapper matches A4 landscape width -->
     <div class="pdf-stage"><div class="pdf-page" style="display:inline-block;background:#fff;padding:6mm 4mm;color:#111;box-sizing:border-box;width:297mm;min-width:297mm;">
       <h2 style="margin:4px 0 6px">การประมาณราคาค่าแรง SUB</h2>
-
+      <div style="height:1em"></div>
       <div style="display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap">
         <div style="min-width:180px"><strong>SUB:</strong> ${escapeHtml(saved.subName||'')}</div>
         <div style="min-width:120px"><strong>WA:</strong> ${escapeHtml(saved.wa||'')}</div>
@@ -304,10 +315,14 @@ function renderSavedPreview(saved) {
       </div>
 
       <div style="margin-top:20px;text-align:right">
-        <div><strong>Unit price (per set):</strong> ${escapeHtml(saved.unitPrice||'0.00')}</div>
         <div>
-          <span style="margin-right:18px"><strong>Sets:</strong> ${escapeHtml((saved.totalSet !== undefined && saved.totalSet !== null) ? saved.totalSet : '1')}</span>
-          <span><strong>Total:</strong> ${escapeHtml(saved.totalPrice||'0.00')}</span>
+          <strong>Power:</strong> ${money(powerSum)}
+          <span style="margin-left:18px"><strong>Unit price (per set):</strong> ${escapeHtml(saved.unitPrice||'0.00')}</span>
+        </div>
+        <div>
+          <strong>Control:</strong> ${money(controlSum)}
+          <span style="margin-left:18px"><strong>Sets:</strong> ${escapeHtml((saved.totalSet !== undefined && saved.totalSet !== null) ? saved.totalSet : '1')}</span>
+          <span style="margin-left:18px"><strong>Total:</strong> ${escapeHtml(saved.totalPrice||'0.00')}</span>
         </div>
         <div style="margin-top:6px;text-align:right;font-size:12px;color:#333;margin-bottom:12px">(${escapeHtml(numberToThaiText(saved.totalPrice || saved.unitPrice || '0.00'))})</div>
 
