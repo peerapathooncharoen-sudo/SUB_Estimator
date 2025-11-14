@@ -716,15 +716,22 @@
   function updateSummary() {
     const powerTotal = getTableSumFromTotals("power-table-body");
     const controlTotal = getTableSumFromTotals("control-table-body");
-    const combined = powerTotal + controlTotal;
+    const combined = powerTotal + controlTotal;            // ราคาต่อชุด (ไม่รวม Mark-up)
     const totalSet = parseFloat(document.getElementById("total-set").value) || 1;
     document.getElementById("unit-price").value = formatMoney(combined);
-    const subtotal = combined * totalSet;
+
+    const subtotal = combined * totalSet;                  // ราคารวมก่อน Mark-up
     document.getElementById("total-price").value = formatMoney(subtotal);
+
     const rateInput = document.getElementById("markup-rate");
     const rate = (rateInput && !isNaN(parseFloat(rateInput.value))) ? (parseFloat(rateInput.value)/100) : 0;
-    const markupAmount = subtotal * rate;
-    const totalWithMarkup = subtotal + markupAmount;
+
+    // [CHANGE] Mark-up amount = ราคาต่อชุด × (1 + rate)
+    const pricePerSetWithMarkup = combined * (1 + rate);
+    const markupAmount = pricePerSetWithMarkup;            
+    // [CHANGE] Total with markup = ราคาต่อชุดรวม Mark-up × จำนวนชุด
+    const totalWithMarkup = pricePerSetWithMarkup * totalSet;
+
     const markupAmtEl = document.getElementById('markup-amount');
     const totalWithMarkupEl = document.getElementById('total-price-with-markup');
     if (markupAmtEl) markupAmtEl.value = formatMoney(markupAmount);
