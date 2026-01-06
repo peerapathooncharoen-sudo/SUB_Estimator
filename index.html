@@ -362,7 +362,6 @@
 
   <!-- header logout -->
   <div id="auth-header" style="padding:10px;display:flex;justify-content:flex-end;gap:8px;">
-    <span id="auth-welcome" style="font-size:13px;"></span>
     <button id="btn-logout" type="button">Logout</button>
   </div>
 
@@ -375,10 +374,6 @@
     const ok = window.ensureAuth();
     console.log('[index] ensureAuth returned', ok);
     if (!ok) return;
-
-    const s = window.getSession && window.getSession();
-    const welcome = document.getElementById('auth-welcome');
-    if (welcome && s && s.username) welcome.textContent = 'ผู้ใช้: ' + s.username;
 
     const btn = document.getElementById('btn-logout');
     if (btn) {
@@ -712,7 +707,6 @@
       return sum;
     }
 
-  // [MODIFY] ใส่ลูกน้ำให้ทุกช่องสรุปผลลัพธ์
   function updateSummary() {
     const powerTotal = getTableSumFromTotals("power-table-body");
     const controlTotal = getTableSumFromTotals("control-table-body");
@@ -738,7 +732,6 @@
     if (totalWithMarkupEl) totalWithMarkupEl.value = formatMoney(totalWithMarkup);
   };
 
-    // เพิ่มแถวเริ่มต้น 1 แถวให้แต่ละตาราง หากยังว่าง
     document.addEventListener('DOMContentLoaded', () => {
       try {
         const pb = document.getElementById('power-table-body');
