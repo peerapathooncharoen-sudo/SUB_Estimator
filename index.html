@@ -373,7 +373,10 @@
     }
     const ok = window.ensureAuth();
     console.log('[index] ensureAuth returned', ok);
-    if (!ok) return;
+    if (!ok) {
+      location.href = 'login.html';
+      return;
+    }
 
     const btn = document.getElementById('btn-logout');
     if (btn) {
@@ -382,6 +385,11 @@
         setTimeout(() => location.href = 'login.html', 50);
       });
     }
+  });
+
+  // Automatically clear session when the page is hidden (e.g., tab closed)
+  window.addEventListener('pagehide', () => {
+    window.clearSession && window.clearSession();
   });
 </script>
 
