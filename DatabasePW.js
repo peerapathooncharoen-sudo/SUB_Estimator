@@ -486,7 +486,7 @@ var powerDatabase = {
     },
     "122": {
         "desc": "ติดพลาสติก 5 ชุด",
-        "price": 26.40
+        "price": 16.90
     },
     "123": {
         "desc": "ติด NAME PLATE",
