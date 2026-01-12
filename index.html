@@ -527,8 +527,9 @@
   <!-- [ADD] money format helpers (ใช้โดย updateTotal/getTableSumFromTotals/updateSummary) -->
   <script>
     function formatMoney(n){
+      const truncated = Math.floor(Number(n) * 100) / 100;
       return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-        .format(Number(n) || 0);
+        .format(truncated);
     }
     function unformat(s){
       return parseFloat(String(s).replace(/,/g, '')) || 0;
