@@ -106,7 +106,7 @@ var controlDatabase = {
     },
     "27": {
         "desc": "วายริ่งชุด ACCESSORIES(UV,ST,CC,MOTOR)",
-        "price": 72.90
+        "price": 79.20
     },
     "28": {
         "desc": "วายริ่งชุด FUNCTION CB MAIN(OV+UV+TR TEMP+ALARM)",
