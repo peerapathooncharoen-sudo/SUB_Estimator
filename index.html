@@ -697,10 +697,13 @@
         const qty = parseFloat(row.cells[1].children[0].value) || 0;
         const price = parseFloat(row.cells[2].children[0].value) || 0;
         const rowTotal = qty * price;
+        // round to 2 decimals (round half-up)
+        const roundedReal = Math.round(rowTotal * 100) / 100;
         const totalInput = row.cells[4].children[0];
-        totalInput.value = formatMoney(rowTotal);
-        row.cells[4].setAttribute('data-real-total', rowTotal);
-        sectionTotal += rowTotal;
+        totalInput.value = formatMoney(roundedReal);
+        // store rounded numeric total to avoid floating-point artifacts later
+        row.cells[4].setAttribute('data-real-total', roundedReal);
+        sectionTotal += roundedReal;
       });
       document.getElementById(`${type}-price`).textContent =
         `${type.charAt(0).toUpperCase() + type.slice(1)} Price: ` + formatMoney(sectionTotal) + " Baht";
