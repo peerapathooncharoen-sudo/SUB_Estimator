@@ -769,12 +769,16 @@
           const input = cell.querySelector('input, textarea');
           return input ? (input.value || '') : '';
         };
+        // prefer the numeric value stored in data-real-total; fall back to parsing the displayed text
+        const rawAttr = row.cells[4] && row.cells[4].getAttribute('data-real-total');
+        const rawNum = (rawAttr !== null && rawAttr !== undefined && rawAttr !== '') ? parseFloat(rawAttr) : (unformat(grab(4)) || 0);
         const item = {
           no: grab(0).trim(),
           qty: grab(1).trim(),
           price: grab(2).trim(),
           desc: grab(3).trim(),
-          total: unformat(grab(4)) || 0
+          // store formatted string with 2 decimals (uses existing formatMoney which rounds)
+          total: formatMoney(rawNum)
         };
         return item;
       }).filter(item => item.no || item.qty || item.price || item.desc || item.total);
