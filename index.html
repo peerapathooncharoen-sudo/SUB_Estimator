@@ -699,11 +699,12 @@
         const rowTotal = qty * price;
         // round to 2 decimals (round half-up)
         const roundedReal = Math.round(rowTotal * 100) / 100;
+        const roundedStr = roundedReal.toFixed(2); // store as "123.45"
         const totalInput = row.cells[4].children[0];
         totalInput.value = formatMoney(roundedReal);
-        // store rounded numeric total to avoid floating-point artifacts later
-        row.cells[4].setAttribute('data-real-total', roundedReal);
-        sectionTotal += roundedReal;
+        // store rounded numeric total as fixed-2 string to keep downstream consistent
+        row.cells[4].setAttribute('data-real-total', roundedStr);
+        sectionTotal += parseFloat(roundedStr);
       });
       document.getElementById(`${type}-price`).textContent =
         `${type.charAt(0).toUpperCase() + type.slice(1)} Price: ` + formatMoney(sectionTotal) + " Baht";
@@ -717,7 +718,7 @@
         const totalCell = row.cells[4];
         if (totalCell) {
           const realTotal = totalCell.getAttribute('data-real-total');
-          sum += realTotal ? parseFloat(realTotal) : 0;
+          sum += realTotal ? parseFloat(String(realTotal).replace(/,/g, '')) : 0;
         }
       });
       return sum;
@@ -775,13 +776,17 @@
         // prefer the numeric value stored in data-real-total; fall back to parsing the displayed text
         const rawAttr = row.cells[4] && row.cells[4].getAttribute('data-real-total');
         const rawNum = (rawAttr !== null && rawAttr !== undefined && rawAttr !== '') ? parseFloat(rawAttr) : (unformat(grab(4)) || 0);
+        // ensure numeric is rounded to 2 decimals
+        const totalNumeric = Math.round(Number(rawNum) * 100) / 100;
         const item = {
           no: grab(0).trim(),
           qty: grab(1).trim(),
           price: grab(2).trim(),
           desc: grab(3).trim(),
-          // store formatted string with 2 decimals (uses existing formatMoney which rounds)
-          total: formatMoney(rawNum)
+          // keep existing formatted string
+          total: formatMoney(totalNumeric),
+          // new: numeric value (rounded) for reliable saved data / calculations
+          totalNumeric: totalNumeric
         };
         return item;
       }).filter(item => item.no || item.qty || item.price || item.desc || item.total);
@@ -789,6 +794,13 @@
     function collectCurrentEntry() {
       try { updateTotal('power'); updateTotal('control'); updateSummary(); } catch (e) {}
       const now = new Date();
+
+      // ensure numeric fields are normalized then formatted
+      const unitNumeric = unformat(getInputValue('unit-price')) || 0;
+      const totalNumeric = unformat(getInputValue('total-price')) || 0;
+      const markupNumeric = unformat(getInputValue('markup-amount')) || 0;
+      const totalWithMarkupNumeric = unformat(getInputValue('total-price-with-markup')) || totalNumeric;
+
       const entry = {
         subName: getInputValue('subName').trim(),
         wa: getInputValue('wa').trim(),
@@ -796,11 +808,17 @@
         cubicle: getInputValue('cubicle').trim(),
         serial: getInputValue('serial').trim(),
         totalSet: parseFloat(getInputValue('total-set')) || 1,
-        unitPrice: getInputValue('unit-price') || '0.00',
-        totalPrice: getInputValue('total-price') || '0.00',
+        // store formatted strings to keep saved preview consistent
+        unitPrice: formatMoney(unitNumeric),
+        totalPrice: formatMoney(totalNumeric),
         markupRate: getInputValue('markup-rate') || '0',
-        markupAmount: getInputValue('markup-amount') || '0.00',
-        totalPriceWithMarkup: getInputValue('total-price-with-markup') || getInputValue('total-price') || '0.00',
+        markupAmount: formatMoney(markupNumeric),
+        totalPriceWithMarkup: formatMoney(totalWithMarkupNumeric),
+        // new: numeric counterparts (rounded) for reliable downstream use
+        unitPriceNumeric: Math.round(unitNumeric * 100) / 100,
+        totalPriceNumeric: Math.round(totalNumeric * 100) / 100,
+        markupAmountNumeric: Math.round(markupNumeric * 100) / 100,
+        totalPriceWithMarkupNumeric: Math.round(totalWithMarkupNumeric * 100) / 100,
         power: collectTableItems('power-table-body'),
         control: collectTableItems('control-table-body'),
         timestamp: now.getTime(),
