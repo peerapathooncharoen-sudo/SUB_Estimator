@@ -774,7 +774,7 @@
           qty: grab(1).trim(),
           price: grab(2).trim(),
           desc: grab(3).trim(),
-          total: (row.cells[4] && row.cells[4].getAttribute('data-real-total')) || grab(4).trim()
+          total: grab(4).trim()
         };
         return item;
       }).filter(item => item.no || item.qty || item.price || item.desc || item.total);
