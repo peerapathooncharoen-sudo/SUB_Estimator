@@ -526,8 +526,30 @@
 
   <!-- [ADD] money format helpers (ใช้โดย updateTotal/getTableSumFromTotals/updateSummary) -->
   <script>
+    // Decimal adjustment (avoids common floating-point rounding pitfalls)
+    function decimalAdjust(type, value, exp) {
+      if (typeof exp === 'undefined' || +exp === 0) {
+        return Math[type](value);
+      }
+      value = +value;
+      exp = +exp;
+      if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+        return NaN;
+      }
+      // Shift
+      value = value.toString().split('e');
+      value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+      // Shift back
+      value = value.toString().split('e');
+      return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+    }
+
+    function roundToTwo(n) {
+      return decimalAdjust('round', Number(n) || 0, -2);
+    }
+
     function formatMoney(n){
-      const rounded = Math.round(Number(n) * 100) / 100;
+      const rounded = roundToTwo(n);
       return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
         .format(rounded);
     }
@@ -697,8 +719,8 @@
         const qty = parseFloat(row.cells[1].children[0].value) || 0;
         const price = parseFloat(row.cells[2].children[0].value) || 0;
         const rowTotal = qty * price;
-        // round to 2 decimals (round half-up)
-        const roundedReal = Math.round(rowTotal * 100) / 100;
+        // round to 2 decimals using decimal-adjust helper
+        const roundedReal = roundToTwo(rowTotal);
         const roundedStr = roundedReal.toFixed(2); // store as "123.45"
         const totalInput = row.cells[4].children[0];
         totalInput.value = formatMoney(roundedReal);
@@ -776,8 +798,8 @@
         // prefer the numeric value stored in data-real-total; fall back to parsing the displayed text
         const rawAttr = row.cells[4] && row.cells[4].getAttribute('data-real-total');
         const rawNum = (rawAttr !== null && rawAttr !== undefined && rawAttr !== '') ? parseFloat(rawAttr) : (unformat(grab(4)) || 0);
-        // ensure numeric is rounded to 2 decimals
-        const totalNumeric = Math.round(Number(rawNum) * 100) / 100;
+        // ensure numeric is rounded to 2 decimals using helper
+        const totalNumeric = roundToTwo(Number(rawNum));
         const item = {
           no: grab(0).trim(),
           qty: grab(1).trim(),
@@ -815,10 +837,10 @@
         markupAmount: formatMoney(markupNumeric),
         totalPriceWithMarkup: formatMoney(totalWithMarkupNumeric),
         // new: numeric counterparts (rounded) for reliable downstream use
-        unitPriceNumeric: Math.round(unitNumeric * 100) / 100,
-        totalPriceNumeric: Math.round(totalNumeric * 100) / 100,
-        markupAmountNumeric: Math.round(markupNumeric * 100) / 100,
-        totalPriceWithMarkupNumeric: Math.round(totalWithMarkupNumeric * 100) / 100,
+        unitPriceNumeric: roundToTwo(unitNumeric),
+        totalPriceNumeric: roundToTwo(totalNumeric),
+        markupAmountNumeric: roundToTwo(markupNumeric),
+        totalPriceWithMarkupNumeric: roundToTwo(totalWithMarkupNumeric),
         power: collectTableItems('power-table-body'),
         control: collectTableItems('control-table-body'),
         timestamp: now.getTime(),
