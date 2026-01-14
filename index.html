@@ -526,9 +526,16 @@
 
   <!-- [ADD] money format helpers (ใช้โดย updateTotal/getTableSumFromTotals/updateSummary) -->
   <script>
-    // Decimal adjustment (avoids common floating-point rounding pitfalls)
+    // Round half away from zero (matches Excel ROUND behaviour)
+    function roundAwayFromZeroSimple(value) {
+      // value is assumed to be a finite number
+      return (value >= 0) ? Math.floor(value + 0.5) : Math.ceil(value - 0.5);
+    }
+
+    // Decimal adjust using 'e' shift but applying away-from-zero rounding for ties
     function decimalAdjust(type, value, exp) {
       if (typeof exp === 'undefined' || +exp === 0) {
+        if (type === 'round') return roundAwayFromZeroSimple(Number(value));
         return Math[type](value);
       }
       value = +value;
@@ -537,11 +544,17 @@
         return NaN;
       }
       // Shift
-      value = value.toString().split('e');
-      value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+      let parts = value.toString().split('e');
+      let shifted = +(parts[0] + 'e' + (parts[1] ? (+parts[1] - exp) : -exp));
+      let adjusted;
+      if (type === 'round') {
+        adjusted = roundAwayFromZeroSimple(shifted);
+      } else {
+        adjusted = Math[type](shifted);
+      }
       // Shift back
-      value = value.toString().split('e');
-      return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+      let back = adjusted.toString().split('e');
+      return +(back[0] + 'e' + (back[1] ? (+back[1] + exp) : exp));
     }
 
     function roundToTwo(n) {
