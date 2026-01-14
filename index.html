@@ -854,6 +854,12 @@
         totalPriceNumeric: roundToTwo(totalNumeric),
         markupAmountNumeric: roundToTwo(markupNumeric),
         totalPriceWithMarkupNumeric: roundToTwo(totalWithMarkupNumeric),
+
+	// urgent control saved values (from the UI inputs)
+		controlUrgentPrice: formatMoney(unformat(getInputValue('control-urgent-price') || 0)),
+		controlUrgentPriceNumeric: roundToTwo(unformat(getInputValue('control-urgent-price') || 0)),
+		controlUrgentDesc: getInputValue('control-urgent-desc').trim(),
+
         power: collectTableItems('power-table-body'),
         control: collectTableItems('control-table-body'),
         timestamp: now.getTime(),
@@ -885,6 +891,9 @@
       if (typeof window.renderSavedList === 'function') {
         window.renderSavedList();
       }
+
+		// inject urgent-info into the displayed saved-output preview
+		try { if (typeof injectUrgentIntoSavedOutput === 'function') injectUrgentIntoSavedOutput(entry); } catch(e){ console.warn('injectUrgentIntoSavedOutput failed', e); }
 
       // ช่วยแทรกค่าเร่งด่วนเข้าไปใน preview/ผลลัพธ์ที่แสดง (ใต้ Control ถ้าพบ)
       try { if (typeof injectUrgentIntoSavedOutput === 'function') injectUrgentIntoSavedOutput(entry); } catch(e){ console.warn('injectUrgentIntoSavedOutput failed', e); }
