@@ -374,20 +374,20 @@ function renderSavedPreview(saved) {
           </td>
         </tr>
         <tr>
-          <td colspan="3" style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
+          <td colspan="3" style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:120px">
             <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
               <div style="height:20px"></div>
               <div style="font-size:12px;color:#555;margin-top:6px">ผจก.แผนก/ฝ่ายวางแผน<br></div>
               <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
+              <!-- moved form id and effective date inside the signature frame -->
+              <div style="margin-top:8px; color:#666; font-size:11px; text-align:center;">FM-PMEP-010(01)</div>
+              <div style="color:#666; font-size:11px; text-align:center; margin-top:4px;">เริ่มใช้ 14 มี.ค. 2568</div>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
-      <div style="color:#666;font-size:12px;margin-top:6px">FM-PMEP-010(01)
-      <div style="color:#666;font-size:12px;margin-top:6px">เริ่มใช้ 14 มี.ค. 2568
-      </div>
-    </div></div>
+    </div>
   `;
 
   // collapse to a single line (remove extra whitespace/newlines)
