@@ -346,42 +346,44 @@ function renderSavedPreview(saved) {
 
       <!-- signature table -->
     <table class="sig-table" style="width:100%;border-collapse:collapse;box-sizing:border-box;margin-top:12px;">
-        <colgroup>
-          <col style="width:25%"><col style="width:25%"><col style="width:25%"><col style="width:25%">
-        </colgroup>
-        <tbody>
-          <tr>
-            <td style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
-              <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
-                <div style="height:50px"></div>
-                <div style="font-size:12px;color:#555;margin-top:14px">ผู้ตรวจรับงาน(SUB)<br></div>
-                <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
-              </div>
-            </td>
-            <td style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
-              <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
-                <div style="height:50px"></div>
-                <div style="font-size:12px;color:#555;margin-top:14px">หัวหน้าผู้ควบคุมงาน(ผู้ดูแลSUB)<br></div>
-                <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
-              </div>
-            </td>
-            <td style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
-              <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
-                <div style="height:50px"></div>
-                <div style="font-size:12px;color:#555;margin-top:14px">ผจก.แผนก/ฝ่ายผลิตงานไฟฟ้า<br></div>
-                <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
-              </div>
-            </td>
-            <td style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
-              <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
-                <div style="height:50px"></div>
-                <div style="font-size:12px;color:#555;margin-top:14px">ผจก.แผนก/ฝ่ายวางแผน<br></div>
-                <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <colgroup>
+        <col style="width:33.3333%"><col style="width:33.3333%"><col style="width:33.3333%">
+      </colgroup>
+      <tbody>
+        <tr>
+          <td style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
+            <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
+              <div style="height:50px"></div>
+              <div style="font-size:12px;color:#555;margin-top:14px">ผู้ตรวจรับงาน(SUB)<br></div>
+              <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
+            </div>
+          </td>
+          <td style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
+            <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
+              <div style="height:50px"></div>
+              <div style="font-size:12px;color:#555;margin-top:14px">หัวหน้าผู้ควบคุมงาน(ผู้ดูแลSUB)<br></div>
+              <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
+            </div>
+          </td>
+          <td style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
+            <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
+              <div style="height:50px"></div>
+              <div style="font-size:12px;color:#555;margin-top:14px">ผจก.แผนก/ฝ่ายผลิตงานไฟฟ้า<br></div>
+              <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
+            <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
+              <div style="height:20px"></div>
+              <div style="font-size:12px;color:#555;margin-top:6px">ผจก.แผนก/ฝ่ายวางแผน<br></div>
+              <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
       <div style="color:#666;font-size:12px;margin-top:6px">FM-PMEP-010(01)
       <div style="color:#666;font-size:12px;margin-top:6px">เริ่มใช้ 14 มี.ค. 2568
       </div>
