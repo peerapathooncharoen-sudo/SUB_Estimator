@@ -885,29 +885,12 @@
         timeOnly: now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
       };
 
-  // ถ้ามีค่าเร่งด่วน ให้แนบเป็นแถวหนึ่งใน control (qty=1)
-  try {
-    const urgentRaw = unformat(getInputValue('control-urgent-price')) || 0;
-    const urgentNum = roundToTwo(urgentRaw);
-    const urgentDesc = getInputValue('control-urgent-desc').trim();
-    if (urgentNum > 0 || urgentDesc) {
-      // ensure control is an array copy we can push into
-      entry.control = Array.isArray(entry.control) ? entry.control.slice() : [];
-      entry.control.push({
-        no: '',
-        qty: urgentNum ? '1' : '',
-        price: urgentNum ? formatMoney(urgentNum) : '',
-        desc: urgentDesc || 'ค่าเร่งด่วน',
-        total: formatMoney(urgentNum),
-        totalNumeric: urgentNum
-      });
-    }
-  } catch(e) { console.warn('attach urgent to control failed', e); }
+    // NOTE: ค่าเร่งด่วนไม่ถูกรวมเป็นแถวใน control — เก็บเป็นฟิลด์แยก (controlUrgentPrice / controlUrgentPriceNumeric / controlUrgentDesc)
 
-  if (typeof getCurrentUsername === 'function') {
-    entry.savedBy = getCurrentUsername();
-  }
-  return entry;
+    if (typeof getCurrentUsername === 'function') {
+      entry.savedBy = getCurrentUsername();
+    }
+    return entry;
     }
     window.saveData = function saveData() {
       if (typeof window.saveToLocalStorage !== 'function') {
