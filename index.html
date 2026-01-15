@@ -775,7 +775,11 @@
   function updateSummary() {
     const powerTotal = getTableSumFromTotals("power-table-body");
     const controlTotal = getTableSumFromTotals("control-table-body");
-    const combined = powerTotal + controlTotal;            // ราคาต่อชุด (ไม่รวม Mark-up)
+    // read urgent control price (numeric, rounded) and include it directly
+    const urgentRaw = unformat(getInputValue('control-urgent-price')) || 0;
+    const urgentPrice = roundToTwo(urgentRaw);
+    const combined = powerTotal + controlTotal + urgentPrice; // ราคาต่อชุด (รวมค่าเร่งด่วน)
+
     const totalSet = parseFloat(document.getElementById("total-set").value) || 1;
     document.getElementById("unit-price").value = formatMoney(combined);
 
@@ -1092,78 +1096,18 @@
   <script>
 (function () {
   function ensureUrgentUI() {
-    if (document.getElementById('control-urgent-price')) return;
-    const controlPrice = document.getElementById('control-price');
-    if (!controlPrice) return;
-
-    const wrap = document.createElement('div');
-    wrap.id = 'control-urgent-wrap';
-    wrap.style.marginTop = '8px';
-    wrap.style.display = 'flex';
-    wrap.style.gap = '8px';
-    wrap.style.alignItems = 'center';
-    wrap.style.flexWrap = 'wrap';
-
-    wrap.innerHTML = `
-      <div style="min-width:160px;">
-        <label for="control-urgent-price" style="font-weight:bold; display:block;">ค่าเร่งด่วน (Baht):</label>
-        <input id="control-urgent-price" type="number" min="0" step="0.01" value="0" style="width:100%; box-sizing:border-box;">
-      </div>
-      <div style="flex:1; min-width:220px;">
-        <label for="control-urgent-desc" style="font-weight:bold; display:block;">รายละเอียดเร่งด่วน:</label>
-        <input id="control-urgent-desc" type="text" placeholder="รายละเอียด..." />
-      </div>
-    `;
-
-    controlPrice.insertAdjacentElement('afterend', wrap);
-
-    const priceInput = document.getElementById('control-urgent-price');
-    priceInput.addEventListener('input', () => { try { updateSummary(); } catch(_){} });
-    priceInput.addEventListener('change', () => { try { updateSummary(); } catch(_){} });
-
-    // wrap updateSummary once (non-destructive)
-    if (!window.__orig_updateSummary && typeof window.updateSummary === 'function') {
-      window.__orig_updateSummary = window.updateSummary;
-      window.updateSummary = function wrappedUpdateSummary() {
-        window.__orig_updateSummary();
-        try {
-          const urgentRaw = unformat(getInputValue('control-urgent-price')) || 0;
-          const urgentPrice = roundToTwo(urgentRaw);
-          const unitEl = document.getElementById('unit-price');
-          const totalSet = parseFloat(document.getElementById('total-set').value) || 1;
-          const baseUnit = unformat(unitEl.value) || 0; // original unit (without urgent)
-          const newUnit = roundToTwo(baseUnit + urgentPrice);
-          unitEl.value = formatMoney(newUnit);
-
-          const subtotalEl = document.getElementById('total-price');
-          const newSubtotal = roundToTwo(newUnit * totalSet);
-          subtotalEl.value = formatMoney(newSubtotal);
-
-          const rateInput = document.getElementById('markup-rate');
-          const rate = (rateInput && !isNaN(parseFloat(rateInput.value))) ? (parseFloat(rateInput.value)/100) : 0;
-          const pricePerSetWithMarkup = roundToTwo(newUnit * (1 + rate));
-          const markupAmtEl = document.getElementById('markup-amount');
-          const totalWithMarkupEl = document.getElementById('total-price-with-markup');
-          if (markupAmtEl) markupAmtEl.value = formatMoney(pricePerSetWithMarkup);
-          if (totalWithMarkupEl) totalWithMarkupEl.value = formatMoney(roundToTwo(pricePerSetWithMarkup * totalSet));
-          // do not overwrite the numeric input formatting for priceInput (leave as number input)
-        } catch (e) { console.warn('wrappedUpdateSummary failed', e); }
-      };
+    // keep this installer light: UI already present as static HTML in the template.
+    // Ensure input listeners exist so updateSummary runs when urgent inputs change.
+    const priceEl = document.getElementById('control-urgent-price');
+    const descEl = document.getElementById('control-urgent-desc');
+    if (priceEl && !priceEl._urgentBound) {
+      priceEl.addEventListener('input', () => { try { updateSummary(); } catch(_){} });
+      priceEl.addEventListener('change', () => { try { updateSummary(); } catch(_){} });
+      priceEl._urgentBound = true;
     }
-
-    // wrap collectCurrentEntry to include urgent fields
-    if (!window.__orig_collectCurrentEntry && typeof window.collectCurrentEntry === 'function') {
-      window.__orig_collectCurrentEntry = window.collectCurrentEntry;
-      window.collectCurrentEntry = function wrappedCollectCurrentEntry() {
-        const entry = window.__orig_collectCurrentEntry();
-        try {
-          const urgentNum = roundToTwo(unformat(getInputValue('control-urgent-price')) || 0);
-          entry.controlUrgentPrice = formatMoney(urgentNum);
-          entry.controlUrgentPriceNumeric = urgentNum;
-          entry.controlUrgentDesc = getInputValue('control-urgent-desc').trim();
-        } catch (e) { console.warn('wrappedCollectCurrentEntry failed', e); }
-        return entry;
-      };
+    if (descEl && !descEl._urgentBound) {
+      // no-op but keep for symmetry (could add preview update logic)
+      descEl._urgentBound = true;
     }
   }
 
@@ -1171,10 +1115,10 @@
   window.installControlUrgentUI = ensureUrgentUI;
   document.addEventListener('DOMContentLoaded', ensureUrgentUI);
 })();
-  </script>
+</script>
 
-  <!-- waitForElement: resolve when selector appears under root (MutationObserver + timeout) -->
-  <script>
+<!-- waitForElement: resolve when selector appears under root (MutationObserver + timeout) -->
+<script>
 	function waitForElement(selector, root = document, timeout = 1200) {
 	  return new Promise((resolve, reject) => {
 	    try {
@@ -1250,6 +1194,6 @@
 	// expose for manual calls / debugging
 	window.injectUrgentIntoSavedOutput = injectUrgentIntoSavedOutput;
 	window.waitForElement = waitForElement;
-  </script>
+</script>
 </body>
 </html>
