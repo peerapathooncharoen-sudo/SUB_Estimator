@@ -221,6 +221,17 @@ function renderSavedPreview(saved) {
   const powerSum = sumItems(saved.power);
   const controlSum = sumItems(saved.control);
 
+  // urgent saved value (separate)
+  const urgentNum = (saved && saved.controlUrgentPriceNumeric !== undefined && saved.controlUrgentPriceNumeric !== null)
+    ? Number(saved.controlUrgentPriceNumeric)
+    : (saved && saved.controlUrgentPrice ? toNum(saved.controlUrgentPrice) : 0);
+  const urgentDesc = saved && saved.controlUrgentDesc ? saved.controlUrgentDesc : '';
+
+  // totals including urgent (per set)
+  const totalPerSet = powerSum + controlSum + (urgentNum || 0);
+  const sets = (saved.totalSet !== undefined && saved.totalSet !== null) ? Number(saved.totalSet) || 1 : 1;
+  const totalAll = totalPerSet * sets;
+
   const html = `
     <style>
       /* compact symmetric gutter: 4mm top/bottom, 3mm left/right */
@@ -311,20 +322,27 @@ function renderSavedPreview(saved) {
         <div class="pc-col">
           <h3 style="margin:8px 0 4px">Control</h3>
           ${renderItems(saved.control)}
+           ${ (urgentNum || urgentDesc) ? `<div style="margin-top:8px;padding:6px;border:1px dashed #ccc;background:#fafafa">
+               <div style="font-weight:600;margin-bottom:4px">ค่าเร่งด่วน (Urgent)</div>
+               <div style="display:flex;justify-content:space-between;gap:12px">
+                 <div style="flex:1;text-align:left">${escapeHtml(urgentDesc || '-')}</div>
+                 <div style="min-width:160px;text-align:right">${money(urgentNum)}</div>
+               </div>
+             </div>` : '' }
         </div>
       </div>
 
       <div style="margin-top:20px;text-align:right">
         <div>
           <strong>Power:</strong> ${money(powerSum)}
-          <span style="margin-left:18px"><strong>Unit price (per set):</strong> ${escapeHtml(saved.unitPrice||'0.00')}</span>
+          <span style="margin-left:18px"><strong>Unit price (per set):</strong> ${money(totalPerSet)}</span>
         </div>
         <div>
           <strong>Control:</strong> ${money(controlSum)}
-          <span style="margin-left:18px"><strong>Sets:</strong> ${escapeHtml((saved.totalSet !== undefined && saved.totalSet !== null) ? saved.totalSet : '1')}</span>
-          <span style="margin-left:18px"><strong>Total:</strong> ${escapeHtml(saved.totalPrice||'0.00')}</span>
+          <span style="margin-left:18px"><strong>Sets:</strong> ${escapeHtml(sets)}</span>
+          <span style="margin-left:18px"><strong>Total:</strong> ${money(totalAll)}</span>
         </div>
-        <div style="margin-top:6px;text-align:right;font-size:12px;color:#333;margin-bottom:12px">(${escapeHtml(numberToThaiText(saved.totalPrice || saved.unitPrice || '0.00'))})</div>
+        <div style="margin-top:6px;text-align:right;font-size:12px;color:#333;margin-bottom:12px">(${escapeHtml(numberToThaiText(totalAll || totalPerSet || '0.00'))})</div>
 
       <!-- signature table -->
     <table class="sig-table" style="width:100%;border-collapse:collapse;box-sizing:border-box;margin-top:12px;">
