@@ -1159,5 +1159,84 @@
   document.addEventListener('DOMContentLoaded', ensureUrgentUI);
 })();
   </script>
+
+  <!-- waitForElement: resolve when selector appears under root (MutationObserver + timeout) -->
+  <script>
+	function waitForElement(selector, root = document, timeout = 1200) {
+	  return new Promise((resolve, reject) => {
+	    try {
+	      const found = root.querySelector(selector);
+	      if (found) return resolve(found);
+	      const obs = new MutationObserver((mutations, observer) => {
+	        const el = root.querySelector(selector);
+	        if (el) { observer.disconnect(); resolve(el); }
+	      });
+	      obs.observe(root, { childList: true, subtree: true });
+	      setTimeout(() => {
+	        try { obs.disconnect(); } catch(_) {}
+	        const el2 = root.querySelector(selector);
+	        if (el2) return resolve(el2);
+	        reject(new Error('timeout'));
+	      }, timeout);
+	    } catch (e) { reject(e); }
+	  });
+	}
+
+	// injectUrgentIntoSavedOutput: insert urgent price/desc into saved-output (.pdf-page) after Control block or append
+	function injectUrgentIntoSavedOutput(entry) {
+	  try {
+	    if (!entry) return;
+	    const savedOutput = document.getElementById('saved-output');
+	    if (!savedOutput) return;
+	    const pdfPage = savedOutput.querySelector('.pdf-page') || savedOutput;
+
+	    const urgentNum = (entry.controlUrgentPriceNumeric !== undefined) ? entry.controlUrgentPriceNumeric : (entry.controlUrgentPrice ? unformat(entry.controlUrgentPrice) : 0);
+	    const urgentDesc = entry.controlUrgentDesc || '';
+	    if ((!urgentNum || urgentNum === 0) && !urgentDesc) return;
+
+	    // remove previous injected blocks
+	    Array.from(pdfPage.querySelectorAll('.saved-urgent-info')).forEach(n => n.remove());
+
+	    const block = document.createElement('div');
+	    block.className = 'saved-urgent-info';
+	    block.style.marginTop = '8px';
+	    block.style.borderTop = '1px solid #ddd';
+	    block.style.paddingTop = '6px';
+	    block.style.display = 'flex';
+	    block.style.justifyContent = 'space-between';
+	    block.style.fontSize = '12px';
+	    block.innerHTML = `
+	      <div style="flex:1;">
+	        <div style="font-weight:600;">รายละเอียดเร่งด่วน (Control)</div>
+	        <div>${urgentDesc ? urgentDesc : '&nbsp;'}</div>
+	      </div>
+	      <div style="min-width:120px; text-align:right;">
+	        <div style="font-weight:600;">ราคา</div>
+	        <div>${formatMoney(urgentNum)}</div>
+	      </div>
+	    `;
+
+	    // try to find a 'Control' heading/table to insert after, else append
+	    const candidate = Array.from(pdfPage.querySelectorAll('th, h2, h3, div'))
+	      .find(n => /\bControl\b/i.test((n.textContent || '').trim()));
+	    if (candidate) {
+	      let container = candidate;
+	      while (container && container !== pdfPage && window.getComputedStyle(container).display === 'inline') {
+	        container = container.parentElement;
+	      }
+	      if (container && container.parentNode) container.parentNode.insertBefore(block, container.nextSibling);
+	      else pdfPage.appendChild(block);
+	    } else {
+	      pdfPage.appendChild(block);
+	    }
+	  } catch (err) {
+	    console.warn('injectUrgentIntoSavedOutput error', err);
+	  }
+	}
+
+	// expose for manual calls / debugging
+	window.injectUrgentIntoSavedOutput = injectUrgentIntoSavedOutput;
+	window.waitForElement = waitForElement;
+  </script>
 </body>
 </html>
