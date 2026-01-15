@@ -346,9 +346,9 @@ function renderSavedPreview(saved) {
 
       <!-- signature table -->
     <table class="sig-table" style="width:100%;border-collapse:collapse;box-sizing:border-box;margin-top:12px;">
-      <!-- reduced equal column widths (narrower but still equal) -->
+      <!-- center column slightly wider (30/40/30) -->
       <colgroup>
-        <col style="width:30%"><col style="width:30%"><col style="width:30%">
+        <col style="width:30%"><col style="width:40%"><col style="width:30%">
       </colgroup>
       <tbody>
         <tr>
@@ -375,12 +375,11 @@ function renderSavedPreview(saved) {
           </td>
         </tr>
         <tr>
-          <!-- bottom row split into 3 cells so center aligns with the header above;
-               reduce bottom padding so table border sits close to text -->
+          <!-- bottom row: center cell aligned under the middle header; remove underline from text -->
           <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;vertical-align:bottom;height:56px"></td>
           <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;vertical-align:middle;height:56px">
             <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;box-sizing:border-box">
-              <div style="font-size:12px;color:#555; margin-bottom:4px; border-bottom:0.12mm solid #444; padding-bottom:3px; line-height:1;">ผจก.แผนก/ฝ่ายวางแผน</div>
+              <div style="font-size:12px;color:#555; margin-bottom:4px; line-height:1;">ผจก.แผนก/ฝ่ายวางแผน</div>
               <div style="color:#666;font-size:11px; margin-top:4px;">วันที่........./........./.........</div>
             </div>
           </td>
