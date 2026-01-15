@@ -346,41 +346,44 @@ function renderSavedPreview(saved) {
 
       <!-- signature table -->
     <table class="sig-table" style="width:100%;border-collapse:collapse;box-sizing:border-box;margin-top:12px;">
+      <!-- reduced equal column widths (narrower but still equal) -->
       <colgroup>
-        <col style="width:33.3333%"><col style="width:33.3333%"><col style="width:33.3333%">
+        <col style="width:30%"><col style="width:30%"><col style="width:30%">
       </colgroup>
       <tbody>
         <tr>
-          <td style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
+          <td style="padding:8px;border:0.12mm solid #444;vertical-align:bottom;height:88px">
             <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
-              <div style="height:50px"></div>
-              <div style="font-size:12px;color:#555;margin-top:14px">ผู้ตรวจรับงาน(SUB)<br></div>
-              <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
+              <div style="height:40px"></div>
+              <div style="font-size:12px;color:#555;margin-top:10px">ผู้ตรวจรับงาน(SUB)<br></div>
+              <div style="color:#666;font-size:11px;margin-top:6px">วันที่........./........./.........</div>
             </div>
           </td>
-          <td style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
+          <td style="padding:8px;border:0.12mm solid #444;vertical-align:bottom;height:88px">
             <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
-              <div style="height:50px"></div>
-              <div style="font-size:12px;color:#555;margin-top:14px">หัวหน้าผู้ควบคุมงาน(ผู้ดูแลSUB)<br></div>
-              <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
+              <div style="height:40px"></div>
+              <div style="font-size:12px;color:#555;margin-top:10px">หัวหน้าผู้ควบคุมงาน(ผู้ดูแลSUB)<br></div>
+              <div style="color:#666;font-size:11px;margin-top:6px">วันที่........./........./.........</div>
             </div>
           </td>
-          <td style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:96px">
+          <td style="padding:8px;border:0.12mm solid #444;vertical-align:bottom;height:88px">
             <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
-              <div style="height:50px"></div>
-              <div style="font-size:12px;color:#555;margin-top:14px">ผจก.แผนก/ฝ่ายผลิตงานไฟฟ้า<br></div>
-              <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
+              <div style="height:40px"></div>
+              <div style="font-size:12px;color:#555;margin-top:10px">ผจก.แผนก/ฝ่ายผลิตงานไฟฟ้า<br></div>
+              <div style="color:#666;font-size:11px;margin-top:6px">วันที่........./........./.........</div>
             </div>
           </td>
         </tr>
         <tr>
-          <td colspan="3" style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:120px">
-            <div style="display:flex;justify-content:space-between;align-items:flex-end;height:100%;box-sizing:border-box">
-              <div style="text-align:center">
-                <div style="font-size:12px;color:#555;margin-bottom:6px">ผจก.แผนก/ฝ่ายวางแผน</div>
-                <div style="color:#666;font-size:12px">วันที่........./........./.........</div>
+          <td colspan="3" style="padding:8px;border:0.12mm solid #444;vertical-align:bottom;height:110px">
+            <div style="display:flex;justify-content:space-between;align-items:center;height:100%;box-sizing:border-box">
+              <!-- centered manager block -->
+              <div style="flex:1; display:flex;flex-direction:column;align-items:center;">
+                <div style="font-size:12px;color:#555;margin-bottom:4px">ผจก.แผนก/ฝ่ายวางแผน</div>
+                <div style="color:#666;font-size:11px">วันที่........./........./.........</div>
               </div>
-              <div style="text-align:right; min-width:140px;">
+              <!-- FM info at right corner -->
+              <div style="flex:0 0 140px; text-align:right;">
                 <div style="color:#666; font-size:11px;">FM-PMEP-010(01)</div>
                 <div style="color:#666; font-size:11px; margin-top:4px;">เริ่มใช้ 14 มี.ค. 2568</div>
               </div>
