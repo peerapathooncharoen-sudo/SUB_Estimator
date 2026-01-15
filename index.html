@@ -892,13 +892,14 @@
         window.renderSavedList();
       }
 
-		// inject urgent-info into the displayed saved-output preview
-		try { if (typeof injectUrgentIntoSavedOutput === 'function') injectUrgentIntoSavedOutput(entry); } catch(e){ console.warn('injectUrgentIntoSavedOutput failed', e); }
+    // wait for preview (.pdf-page) then inject urgent info; fallback after timeout
+    if (typeof injectUrgentIntoSavedOutput === 'function') {
+      waitForElement('#saved-output .pdf-page', document, 1200)
+        .then(() => { try { injectUrgentIntoSavedOutput(entry); } catch(e){ console.warn(e); } })
+        .catch(() => { try { injectUrgentIntoSavedOutput(entry); } catch(e){ console.warn(e); } });
+    }
 
-      // ช่วยแทรกค่าเร่งด่วนเข้าไปใน preview/ผลลัพธ์ที่แสดง (ใต้ Control ถ้าพบ)
-      try { if (typeof injectUrgentIntoSavedOutput === 'function') injectUrgentIntoSavedOutput(entry); } catch(e){ console.warn('injectUrgentIntoSavedOutput failed', e); }
-
-      alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+    alert('บันทึกข้อมูลเรียบร้อยแล้ว');
     };
 
     window.clearSavedData = function clearSavedData() {
