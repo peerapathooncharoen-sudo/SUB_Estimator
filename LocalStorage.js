@@ -375,12 +375,15 @@ function renderSavedPreview(saved) {
           </td>
         </tr>
         <tr>
-          <td colspan="3" style="padding:8px;border:0.12mm solid #444;vertical-align:bottom;height:110px">
+          <!-- Make bottom border of the cell transparent and draw a tight underline under the manager text -->
+          <td colspan="3" style="padding:8px;border:0.12mm solid #444;border-bottom-color:transparent;vertical-align:bottom;height:110px">
             <div style="display:flex;justify-content:space-between;align-items:center;height:100%;box-sizing:border-box">
-              <!-- centered manager block -->
+              <!-- centered manager block with an underline that fits the text -->
               <div style="flex:1; display:flex;flex-direction:column;align-items:center;">
-                <div style="font-size:12px;color:#555;margin-bottom:4px">ผจก.แผนก/ฝ่ายวางแผน</div>
-                <div style="color:#666;font-size:11px">วันที่........./........./.........</div>
+                <div style="display:inline-block; border-bottom:0.12mm solid #444; padding-bottom:4px; text-align:center;">
+                  <div style="font-size:12px;color:#555;margin-bottom:4px; line-height:1">ผจก.แผนก/ฝ่ายวางแผน</div>
+                  <div style="color:#666;font-size:11px; line-height:1">วันที่........./........./.........</div>
+                </div>
               </div>
               <!-- FM info at right corner -->
               <div style="flex:0 0 140px; text-align:right;">
