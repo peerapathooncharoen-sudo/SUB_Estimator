@@ -352,21 +352,21 @@ function renderSavedPreview(saved) {
       </colgroup>
       <tbody>
         <tr>
-          <td style="padding:8px;border:0.12mm solid #444;border-left:none;vertical-align:bottom;height:88px">
+          <td style="padding:8px;border:0.12mm solid #444;border-left:none;border-right:none;vertical-align:bottom;height:88px">
             <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
               <div style="height:40px"></div>
               <div style="font-size:12px;color:#555;margin-top:10px">ผู้ตรวจรับงาน(SUB)<br></div>
               <div style="color:#666;font-size:11px;margin-top:6px">วันที่........./........./.........</div>
             </div>
           </td>
-          <td style="padding:8px;border:0.12mm solid #444;vertical-align:bottom;height:88px">
+          <td style="padding:8px;border:0.12mm solid #444;border-left:none;border-right:none;vertical-align:bottom;height:88px">
             <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
               <div style="height:40px"></div>
               <div style="font-size:12px;color:#555;margin-top:10px">หัวหน้าผู้ควบคุมงาน(ผู้ดูแลSUB)<br></div>
               <div style="color:#666;font-size:11px;margin-top:6px">วันที่........./........./.........</div>
             </div>
           </td>
-          <td style="padding:8px;border:0.12mm solid #444;border-right:none;vertical-align:bottom;height:88px">
+          <td style="padding:8px;border:0.12mm solid #444;border-left:none;border-right:none;vertical-align:bottom;height:88px">
             <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
               <div style="height:40px"></div>
               <div style="font-size:12px;color:#555;margin-top:10px">ผจก.แผนก/ฝ่ายผลิตงานไฟฟ้า<br></div>
@@ -375,25 +375,25 @@ function renderSavedPreview(saved) {
           </td>
         </tr>
         <tr>
-          <!-- bottom row: remove outer side borders and align manager text to bottom of middle cell -->
+          <!-- bottom row: no outer vertical borders; center cell content aligned to bottom -->
           <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;border-left:none;vertical-align:bottom;height:56px"></td>
-          <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;vertical-align:bottom;height:56px">
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;box-sizing:border-box;padding-bottom:4px">
+          <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;border-left:none;border-right:none;vertical-align:bottom;height:56px">
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;box-sizing:border-box;padding-bottom:2px">
               <div style="font-size:12px;color:#555; line-height:1;">ผจก.แผนก/ฝ่ายวางแผน</div>
               <div style="color:#666;font-size:11px; margin-top:4px;">วันที่........./........./.........</div>
             </div>
           </td>
-          <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;border-right:none;vertical-align:bottom;height:56px">
-            <div style="display:flex;justify-content:flex-end;align-items:flex-end;height:100%;box-sizing:border-box;padding-bottom:4px">
+          <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;vertical-align:bottom;height:56px">
+            <div style="display:flex;justify-content:flex-end;align-items:flex-end;height:100%;box-sizing:border-box;padding-bottom:2px">
               <div style="flex:0 0 140px; text-align:right;">
                 <div style="color:#666; font-size:11px;">FM-PMEP-010(01)</div>
                 <div style="color:#666; font-size:11px; margin-top:4px;">เริ่มใช้ 14 มี.ค. 2568</div>
               </div>
             </div>
           </td>
-         </tr>
-       </tbody>
-     </table>
+        </tr>
+      </tbody>
+    </table>
     </div>
   `;
 
