@@ -396,6 +396,19 @@ function loadSavedToForm(id) {
   document.getElementById('serial').value = it.serial || '';
   document.getElementById('total-set').value = it.totalSet || 1;
 
+  // new: restore urgent inputs (if present in saved entry)
+  try {
+    const urgentPriceEl = document.getElementById('control-urgent-price');
+    const urgentDescEl = document.getElementById('control-urgent-desc');
+    if (urgentPriceEl) {
+      const vNum = (it.controlUrgentPriceNumeric !== undefined && it.controlUrgentPriceNumeric !== null)
+        ? it.controlUrgentPriceNumeric
+        : (it.controlUrgentPrice ? parseFloat(String(it.controlUrgentPrice).replace(/,/g,'')) : 0);
+      urgentPriceEl.value = isNaN(vNum) ? '' : String(vNum);
+    }
+    if (urgentDescEl) urgentDescEl.value = it.controlUrgentDesc || '';
+  } catch (e) { console.warn('restore urgent inputs failed', e); }
+
   const pb = document.getElementById('power-table-body');
   const cb = document.getElementById('control-table-body');
   if (pb) pb.innerHTML = '';

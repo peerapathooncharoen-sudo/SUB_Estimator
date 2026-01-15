@@ -883,10 +883,30 @@
         dateOnly: now.toLocaleDateString('th-TH'),
         timeOnly: now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
       };
-      if (typeof getCurrentUsername === 'function') {
-        entry.savedBy = getCurrentUsername();
-      }
-      return entry;
+
+  // ถ้ามีค่าเร่งด่วน ให้แนบเป็นแถวหนึ่งใน control (qty=1)
+  try {
+    const urgentRaw = unformat(getInputValue('control-urgent-price')) || 0;
+    const urgentNum = roundToTwo(urgentRaw);
+    const urgentDesc = getInputValue('control-urgent-desc').trim();
+    if (urgentNum > 0 || urgentDesc) {
+      // ensure control is an array copy we can push into
+      entry.control = Array.isArray(entry.control) ? entry.control.slice() : [];
+      entry.control.push({
+        no: '',
+        qty: urgentNum ? '1' : '',
+        price: urgentNum ? formatMoney(urgentNum) : '',
+        desc: urgentDesc || 'ค่าเร่งด่วน',
+        total: formatMoney(urgentNum),
+        totalNumeric: urgentNum
+      });
+    }
+  } catch(e) { console.warn('attach urgent to control failed', e); }
+
+  if (typeof getCurrentUsername === 'function') {
+    entry.savedBy = getCurrentUsername();
+  }
+  return entry;
     }
     window.saveData = function saveData() {
       if (typeof window.saveToLocalStorage !== 'function') {
@@ -903,20 +923,16 @@
         return;
       }
       if (typeof window.renderSavedPreview === 'function') {
-        window.renderSavedPreview(entry);
+        try { window.renderSavedPreview(entry); } catch(e){ console.warn('renderSavedPreview error', e); }
       }
       if (typeof window.renderSavedList === 'function') {
-        window.renderSavedList();
+        try { window.renderSavedList(); } catch(e){ console.warn('renderSavedList error', e); }
       }
-
-    // wait for preview (.pdf-page) then inject urgent info; fallback after timeout
-    if (typeof injectUrgentIntoSavedOutput === 'function') {
-      waitForElement('#saved-output .pdf-page', document, 1200)
-        .then(() => { try { injectUrgentIntoSavedOutput(entry); } catch(e){ console.warn(e); } })
-        .catch(() => { try { injectUrgentIntoSavedOutput(entry); } catch(e){ console.warn(e); } });
-    }
-
-    alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+    
+      // schedule robust injection of urgent info after preview is rendered
+      try { scheduleInjectForSavedEntry(entry); } catch (e) { console.warn('scheduleInjectForSavedEntry failed', e); }
+    
+      alert('บันทึกข้อมูลเรียบร้อยแล้ว');
     };
 
     window.clearSavedData = function clearSavedData() {
@@ -1187,7 +1203,7 @@
 	      pdfPage.appendChild(block);
 	    }
 	  } catch (err) {
-	    console.warn('injectUrgentIntoSavedOutput error', err);
+    console.warn('injectUrgentIntoSavedOutput error', err);
 	  }
 	}
 
