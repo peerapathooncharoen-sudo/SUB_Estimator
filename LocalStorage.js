@@ -375,17 +375,17 @@ function renderSavedPreview(saved) {
           </td>
         </tr>
         <tr>
-          <!-- Make bottom border of the cell transparent and draw a tight underline under the manager text -->
-          <td colspan="3" style="padding:8px;border:0.12mm solid #444;border-bottom-color:transparent;vertical-align:bottom;height:110px">
-            <div style="display:flex;justify-content:space-between;align-items:center;height:100%;box-sizing:border-box">
-              <!-- centered manager block with an underline that fits the text -->
-              <div style="flex:1; display:flex;flex-direction:column;align-items:center;">
-                <div style="display:inline-block; border-bottom:0.12mm solid #444; padding-bottom:4px; text-align:center;">
-                  <div style="font-size:12px;color:#555;margin-bottom:4px; line-height:1">ผจก.แผนก/ฝ่ายวางแผน</div>
-                  <div style="color:#666;font-size:11px; line-height:1">วันที่........./........./.........</div>
-                </div>
-              </div>
-              <!-- FM info at right corner -->
+          <!-- bottom row split into 3 cells so center aligns with the header above;
+               reduce bottom padding so table border sits close to text -->
+          <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;vertical-align:bottom;height:56px"></td>
+          <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;vertical-align:middle;height:56px">
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;box-sizing:border-box">
+              <div style="font-size:12px;color:#555; margin-bottom:4px; border-bottom:0.12mm solid #444; padding-bottom:3px; line-height:1;">ผจก.แผนก/ฝ่ายวางแผน</div>
+              <div style="color:#666;font-size:11px; margin-top:4px;">วันที่........./........./.........</div>
+            </div>
+          </td>
+          <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;vertical-align:middle;height:56px">
+            <div style="display:flex;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
               <div style="flex:0 0 140px; text-align:right;">
                 <div style="color:#666; font-size:11px;">FM-PMEP-010(01)</div>
                 <div style="color:#666; font-size:11px; margin-top:4px;">เริ่มใช้ 14 มี.ค. 2568</div>
