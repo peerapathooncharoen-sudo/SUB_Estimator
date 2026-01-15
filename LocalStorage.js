@@ -375,13 +375,15 @@ function renderSavedPreview(saved) {
         </tr>
         <tr>
           <td colspan="3" style="padding:12px;border:0.12mm solid #444;vertical-align:bottom;height:120px">
-            <div style="display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;box-sizing:border-box">
-              <div style="height:20px"></div>
-              <div style="font-size:12px;color:#555;margin-top:6px">ผจก.แผนก/ฝ่ายวางแผน<br></div>
-              <div style="color:#666;font-size:12px;margin-top:6px">วันที่........./........./.........</div>
-              <!-- moved form id and effective date inside the signature frame -->
-              <div style="margin-top:8px; color:#666; font-size:11px; text-align:center;">FM-PMEP-010(01)</div>
-              <div style="color:#666; font-size:11px; text-align:center; margin-top:4px;">เริ่มใช้ 14 มี.ค. 2568</div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;height:100%;box-sizing:border-box">
+              <div style="text-align:center">
+                <div style="font-size:12px;color:#555;margin-bottom:6px">ผจก.แผนก/ฝ่ายวางแผน</div>
+                <div style="color:#666;font-size:12px">วันที่........./........./.........</div>
+              </div>
+              <div style="text-align:right; min-width:140px;">
+                <div style="color:#666; font-size:11px;">FM-PMEP-010(01)</div>
+                <div style="color:#666; font-size:11px; margin-top:4px;">เริ่มใช้ 14 มี.ค. 2568</div>
+              </div>
             </div>
           </td>
         </tr>
