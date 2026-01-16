@@ -376,8 +376,8 @@ function renderSavedPreview(saved) {
         </tr>
         <tr>
           <!-- bottom row: no outer vertical borders; center cell content aligned to bottom -->
-          <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;vertical-align:bottom;height:56px"></td>
-          <td style="padding:6px 8px;border:0.12mm solid #444;border-top:none;vertical-align:bottom;height:56px">
+          <td style="padding:6px 8px;border:none;border-top:none;vertical-align:bottom;height:56px"></td>
+          <td style="padding:6px 8px;border:none;border-top:none;vertical-align:bottom;height:56px">
             <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;box-sizing:border-box;padding-bottom:2px">
               <div style="font-size:12px;color:#555; line-height:1;">ผจก.แผนก/ฝ่ายวางแผน</div>
               <div style="color:#666;font-size:11px; margin-top:4px;">วันที่........./........./.........</div>
